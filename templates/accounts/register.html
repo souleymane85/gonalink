@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<div class="container mt-5">
+
+
+    <div class="card shadow p-4 mx-auto" style="max-width:500px;">
+
+
+        <h2 class="text-center mb-4">
+            🌾 Créer un compte
+        </h2>
+
+
+
+        <form method="post">
+
+
+            {% csrf_token %}
+
+
+            {{ form.as_p }}
+
+
+
+            <button 
+                type="submit" 
+                class="btn btn-success w-100">
+
+                S'inscrire
+
+            </button>
+
+
+
+        </form>
+
+
+
+        <hr>
+
+
+
+        <div class="text-center">
+
+
+            <p>
+                Vous avez déjà un compte ?
+            </p>
+
+
+            <a 
+            href="{% url 'login' %}" 
+            class="btn btn-outline-success">
+
+                🔑 Connexion
+
+            </a>
+
+
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

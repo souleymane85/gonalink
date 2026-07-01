@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: agromarket
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn agromarket.wsgi:application"

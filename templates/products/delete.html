@@ -1,0 +1,8 @@
+<h2>Supprimer {{ product.name }} ?</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit">
+        Confirmer
+    </button>
+</form>

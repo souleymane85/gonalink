@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h2>
+    👥 Gestion des vendeurs
+</h2>
+
+
+<table class="table table-striped">
+
+
+<thead>
+
+<tr>
+
+<th>
+Nom utilisateur
+</th>
+
+<th>
+Email
+</th>
+
+<th>
+Rôle
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+{% for seller in sellers %}
+
+
+<tr>
+
+
+<td>
+{{ seller.username }}
+</td>
+
+
+<td>
+{{ seller.email }}
+</td>
+
+
+<td>
+{{ seller.role }}
+</td>
+
+
+<td>
+
+
+<a href="#" class="btn btn-warning btn-sm">
+
+Modifier
+
+</a>
+
+
+<a href="#" class="btn btn-danger btn-sm">
+
+Supprimer
+
+</a>
+
+
+
+</td>
+
+
+</tr>
+
+
+{% empty %}
+
+
+<tr>
+
+<td colspan="4">
+
+Aucun vendeur enregistré
+
+</td>
+
+</tr>
+
+
+{% endfor %}
+
+
+</tbody>
+
+
+</table>
+
+
+
+{% endblock %}

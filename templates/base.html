@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>
+        {% block title %}AgroMarket{% endblock %}
+    </title>
+
+
+    <!-- Bootstrap -->
+
+    <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+    rel="stylesheet">
+
+
+    <!-- Icons -->
+
+    <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" 
+    rel="stylesheet">
+
+
+    <style>
+
+
+        body {
+
+            background:#f4f6f9;
+
+        }
+
+
+        /* SIDEBAR */
+
+
+        .sidebar {
+
+            position:fixed;
+
+            top:0;
+
+            left:0;
+
+            width:240px;
+
+            height:100vh;
+
+            background:#198754;
+
+            padding-top:20px;
+
+            color:white;
+
+        }
+
+
+
+        .sidebar h3 {
+
+            text-align:center;
+
+            margin-bottom:20px;
+
+        }
+
+
+
+        .sidebar a {
+
+            display:block;
+
+            color:white;
+
+            padding:12px 20px;
+
+            text-decoration:none;
+
+            font-size:15px;
+
+        }
+
+
+
+        .sidebar a:hover {
+
+            background:rgba(255,255,255,0.2);
+
+            border-radius:8px;
+
+        }
+
+
+
+        /* CONTENT */
+
+
+        .content {
+
+            margin-left:240px;
+
+            padding:20px;
+
+        }
+
+
+
+
+        /* TOPBAR */
+
+
+        .topbar {
+
+            margin-left:240px;
+
+            background:white;
+
+            padding:10px 20px;
+
+            border-bottom:1px solid #ddd;
+
+            display:flex;
+
+            justify-content:space-between;
+
+            align-items:center;
+
+        }
+
+
+
+        .btn-cart {
+
+
+            background:#198754;
+
+            color:white;
+
+            padding:6px 12px;
+
+            border-radius:6px;
+
+            text-decoration:none;
+
+        }
+
+
+
+        .btn-cart:hover {
+
+            background:#146c43;
+
+            color:white;
+
+        }
+
+
+
+        /* MOBILE */
+
+
+        @media(max-width:768px){
+
+
+            .sidebar {
+
+                width:100%;
+
+                height:auto;
+
+                position:relative;
+
+            }
+
+
+
+            .content,
+            .topbar {
+
+                margin-left:0;
+
+            }
+
+
+        }
+
+    </style>
+
+    {% block css %}{% endblock %}
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h3>🌾 AgroMarket</h3>
+
+<!-- ACCUEIL POUR TOUS -->
+
+
+<a href="{% url 'home' %}">
+
+<i class="bi bi-house"></i>
+
+Accueil
+
+</a>
+
+<!-- VISITEUR -->
+
+{% if not user.is_authenticated %}
+
+
+<a href="{% url 'register' %}">
+
+<i class="bi bi-shop"></i>
+
+Devenir vendeur
+
+</a>
+
+<a href="{% url 'login' %}">
+
+<i class="bi bi-box-arrow-in-right"></i>
+
+Connexion
+
+</a>
+
+{% endif %}
+
+<!-- UTILISATEUR CONNECTE -->
+
+
+{% if user.is_authenticated %}
+
+<a href="{% url 'product_list' %}">
+
+<i class="bi bi-box"></i>
+
+Produits
+
+</a>
+
+<a href="{% url 'cart' %}">
+
+<i class="bi bi-cart"></i>
+
+Panier
+
+</a>
+
+<a href="{% url 'profile' %}">
+
+<i class="bi bi-person"></i>
+
+Profil
+
+</a>
+<!-- VENDEUR ADMIN -->
+
+{% if user.is_superuser or user.is_staff or user.role == "ADMIN" or user.role == "VENDEUR" %}
+
+<a href="{% url 'dashboard' %}">
+
+<i class="bi bi-speedometer2"></i>
+
+Dashboard
+
+</a>
+
+<a href="{% url 'product_create' %}">
+
+<i class="bi bi-plus-circle"></i>
+
+Ajouter Produit
+
+</a>
+
+{% endif %}
+
+<!-- SUPERUSER SEULEMENT -->
+
+
+{% if user.is_superuser %}
+
+
+
+<a href="{% url 'seller_list' %}">
+
+<i class="bi bi-people"></i>
+
+Gestion vendeurs
+
+</a>
+
+<a href="/admin/">
+
+<i class="bi bi-gear"></i>
+
+Admin Django
+
+</a>
+
+{% endif %}
+
+<!-- DECONNEXION -->
+
+
+<a href="{% url 'logout' %}">
+
+<i class="bi bi-box-arrow-right"></i>
+
+Déconnexion
+
+</a>
+
+
+{% endif %}
+
+</div>
+
+
+<!-- TOP BAR -->
+
+
+<div class="topbar">
+
+
+<h5>
+
+Bienvenue sur AgroMarket 🌾
+
+</h5>
+
+{% if user.is_authenticated %}
+
+
+<a href="{% url 'cart' %}" class="btn-cart">
+
+🛒 Panier
+
+</a>
+
+{% endif %}
+
+
+</div>
+
+<!-- CONTENT -->
+
+<div class="content">
+
+{% block content %}
+
+{% endblock %}
+</div>
+
+</body>
+
+</html>

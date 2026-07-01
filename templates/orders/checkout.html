@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Finaliser commande
+{% endblock %}
+
+
+
+{% block content %}
+
+
+
+<div class="container py-5">
+
+
+<div class="row justify-content-center">
+
+
+<div class="col-md-6">
+
+
+<div class="card shadow p-4">
+
+
+<h2 class="text-center mb-4">
+
+🛒 Finaliser votre commande
+
+</h2>
+
+
+
+<form method="POST">
+
+
+{% csrf_token %}
+
+
+
+
+<div class="mb-3">
+
+<label>
+
+Nom complet
+
+</label>
+
+
+<input 
+type="text"
+name="name"
+class="form-control"
+required>
+
+</div>
+
+
+
+
+
+<div class="mb-3">
+
+<label>
+
+Téléphone WhatsApp
+
+</label>
+
+
+<input 
+type="text"
+name="phone"
+class="form-control"
+placeholder="227xxxxxxxx"
+required>
+
+</div>
+
+
+
+
+
+
+<div class="mb-3">
+
+
+<label>
+
+Adresse livraison
+
+</label>
+
+
+<textarea
+
+name="address"
+
+class="form-control"
+
+rows="3"
+
+required>
+
+</textarea>
+
+
+</div>
+
+
+
+
+
+
+<button
+
+class="btn btn-success w-100">
+
+Confirmer la commande
+
+</button>
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+{% endblock %}

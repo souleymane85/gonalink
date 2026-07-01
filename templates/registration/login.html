@@ -1,0 +1,20 @@
+<h2>Connexion</h2>
+
+
+<form method="post">
+
+{% csrf_token %}
+
+
+{{form.as_p}}
+
+
+<button>
+Se connecter
+</button>
+
+
+</form>
+<a href="/accounts/register/">
+Créer un compte
+</a>

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>🛒 Mon panier</h2>
+
+{% if items %}
+
+<table class="table table-bordered">
+    <thead class="table-success">
+        <tr>
+            <th>Produit</th>
+            <th>Prix</th>
+            <th>Quantité</th>
+            <th>Sous-total</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for item in items %}
+    <tr>
+
+        <td>{{ item.product.name }}</td>
+
+        <td>{{ item.product.price }} FCFA</td>
+
+        <td>
+            <div class="d-flex align-items-center gap-2">
+
+                {% if item.product.stock > 0 %}
+                    <a href="{% url 'add_to_cart' item.product.id %}" class="btn btn-success btn-sm">+</a>
+                {% else %}
+                    <button class="btn btn-secondary btn-sm" disabled>+</button>
+                {% endif %}
+
+                <span>{{ item.qty }}</span>
+
+                <a href="{% url 'remove_one' item.product.id %}" class="btn btn-warning btn-sm">-</a>
+
+            </div>
+        </td>
+
+        <td>{{ item.subtotal }} FCFA</td>
+
+        <td>
+            {% if item.product.stock > 0 %}
+                <span class="badge bg-success">OK</span>
+            {% else %}
+                <span class="badge bg-danger">Rupture</span>
+            {% endif %}
+        </td>
+
+        <td>
+            <a href="{% url 'delete_item' item.product.id %}" class="btn btn-danger btn-sm">
+                Supprimer
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h4 class="text-end fw-bold text-success mt-3">
+    Total général: {{ total }} FCFA
+</h4>
+
+<div class="d-flex gap-2 justify-content-end">
+
+    <a href="{% url 'checkout' %}" class="btn btn-success">
+        📲 Commander WhatsApp
+    </a>
+
+    <a href="{% url 'clear_cart' %}" class="btn btn-danger">
+        🗑 Vider panier
+    </a>
+
+</div>
+
+{% else %}
+
+<p>🛒 Panier vide</p>
+
+{% endif %}
+
+{% endblock %}

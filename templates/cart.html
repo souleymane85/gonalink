@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Mon panier</h2>
+
+{% for item in items %}
+<p>
+    {{ item.product.name }} - {{ item.qty }} x {{ item.product.price }} = {{ item.subtotal }}
+</p>
+{% endfor %}
+
+<h3>Total: {{ total }} FCFA</h3>
+
+<a href="/orders/checkout/" class="btn btn-success">
+    Commander via WhatsApp
+</a>
+
+{% endblock %}

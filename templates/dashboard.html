@@ -1,0 +1,316 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Dashboard{% endblock %}
+
+
+
+{% block content %}
+
+
+<h2>Dashboard</h2>
+
+<p>
+Bienvenue
+<strong>{{ user.username }}</strong>
+</p>
+
+
+
+
+
+<!-- CARTES PRINCIPALES -->
+
+
+<div class="row mt-4">
+
+
+
+    <!-- PRODUITS -->
+
+    <div class="col-md-3">
+
+        <div class="p-3 bg-success text-white rounded">
+
+            <h4>{{ total_products|default:0 }}</h4>
+
+            <p>Produits</p>
+             <!-- LIEN LISTE COMMANDES -->
+
+            <a href="{% url 'product_list' %}"
+               class="btn btn-light btn-sm mt-2">
+
+                Voirproduits
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- COMMANDES -->
+
+    <div class="col-md-3">
+
+        <div class="p-3 bg-primary text-white rounded">
+
+            <h4>{{ total_orders|default:0 }}</h4>
+
+            <p>Commandes</p>
+
+
+
+            <!-- LIEN LISTE COMMANDES -->
+
+            <a href="{% url 'order_list' %}"
+               class="btn btn-light btn-sm mt-2">
+
+                Voir commandes
+
+            </a>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- STOCK FAIBLE -->
+
+    <div class="col-md-3">
+
+        <div class="p-3 bg-warning text-white rounded">
+
+            <h4>{{ low_stock|default:0 }}</h4>
+
+            <p>Stock faible</p>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- RUPTURE -->
+
+    <div class="col-md-3">
+
+        <div class="p-3 bg-danger text-white rounded">
+
+            <h4>{{ out_of_stock|default:0 }}</h4>
+
+            <p>Rupture</p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+<!-- VENTES -->
+
+<div class="row mt-4">
+
+
+
+    <div class="col-md-4">
+
+        <div class="p-3 bg-dark text-white rounded">
+
+            <h4>{{ revenue|default:0 }} FCFA</h4>
+
+            <p>Chiffre d'affaires</p>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="col-md-4">
+
+        <div class="p-3 bg-info text-white rounded">
+
+            <h4>{{ pending_orders|default:0 }}</h4>
+
+            <p>Commandes en attente</p>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <div class="col-md-4">
+
+        <div class="p-3 bg-secondary text-white rounded">
+
+            <h4>{{ delivered_orders|default:0 }}</h4>
+
+            <p>Commandes livrées</p>
+
+        </div>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<!-- PRODUITS RECENTS -->
+
+
+<div class="mt-5">
+
+
+<h4>Produits récents</h4>
+
+
+
+<table class="table table-striped mt-3">
+
+
+<thead>
+
+<tr>
+
+<th>Nom</th>
+
+<th>Prix</th>
+
+<th>Stock</th>
+
+<th>Catégorie</th>
+
+<th>Vendeur</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for product in recent_products %}
+
+<tr>
+
+<td>{{ product.name }}</td>
+
+<td>{{ product.price }} FCFA</td>
+
+<td>{{ product.stock }}</td>
+
+<td>{{ product.get_category_display }}</td>
+
+<td>{{ product.seller.username }}</td>
+
+</tr>
+
+
+
+{% empty %}
+
+<tr>
+
+<td colspan="5">Aucun produit</td>
+
+</tr>
+
+{% endfor %}
+</tbody>
+
+</table>
+</div>
+<!-- COMMANDES RECENTES -->
+<div class="mt-5">
+<h4>
+Dernières commandes
+</h4>
+<table class="table table-bordered">
+<thead>
+<tr>
+<th>Client</th>
+<th>Téléphone</th>
+
+<th>Montant</th>
+
+<th>Statut</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for order in recent_orders %}
+
+<tr>
+
+<td>{{ order.name }}</td>
+
+<td>{{ order.phone }}</td>
+
+<td>{{ order.total }} FCFA</td>
+
+<td>{{ order.get_status_display }}</td>
+
+<td>
+
+<a href="{% url 'order_detail' order.id %}"
+   class="btn btn-primary btn-sm">
+
+   Voir
+
+</a>
+
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+
+<td colspan="5">Aucune commande</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+</div>
+{% endblock %}

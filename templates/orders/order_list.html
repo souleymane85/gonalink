@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h2>
+Liste des commandes
+</h2>
+
+
+
+<table class="table table-striped">
+
+
+<thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Client</th>
+
+<th>Téléphone</th>
+
+<th>Total</th>
+
+<th>Statut</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+
+<tbody>
+
+
+
+{% for order in orders %}
+
+
+<tr>
+
+
+<td>
+#{{ order.id }}
+</td>
+
+
+<td>
+{{ order.name }}
+</td>
+
+
+<td>
+{{ order.phone }}
+</td>
+
+
+<td>
+{{ order.total }} FCFA
+</td>
+
+
+<td>
+{{ order.get_status_display }}
+</td>
+
+
+<td>
+
+<a href="{% url 'order_detail' order.id %}"
+class="btn btn-primary btn-sm">
+
+Voir
+
+</a>
+
+</td>
+
+
+</tr>
+
+
+
+{% endfor %}
+
+
+
+</tbody>
+
+
+</table>
+
+
+
+{% endblock %}
