@@ -26,9 +26,11 @@ import os
 SECRET_KEY = 'django-insecure-te137(fuzd^c)ufwrx-6^9sjo80+&z6o84)p2d57rpzfe=c!t%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["gonalink.onrender.com",
+    "localhost",
+    "127.0.0.1"]
 
 
 # Application definition
