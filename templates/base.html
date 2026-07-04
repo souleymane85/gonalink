@@ -20,9 +20,16 @@
             padding:0;
         }
 
+        /* Décalage uniquement si connecté */
+        body.authenticated .navbar,
+        body.authenticated .content,
+        body.authenticated .footer{
+            margin-left:250px;
+        }
+
         /* =======================
             SIDEBAR
-        ======================== */
+        ======================= */
 
         .sidebar{
             position:fixed;
@@ -44,8 +51,7 @@
 
         .logo{
             width:65px;
-            height:65
-            5px;
+            height:65px;
             object-fit:cover;
             border-radius:50%;
             border:2px solid #fff;
@@ -77,11 +83,10 @@
         }
 
         /* =======================
-            NAVBAR (NEW BOOTSTRAP)
-        ======================== */
+            NAVBAR
+        ======================= */
 
         .navbar{
-            margin-left:250px;
             background:white;
             border-bottom:1px solid #ddd;
             position:sticky;
@@ -91,20 +96,18 @@
 
         /* =======================
             CONTENT
-        ======================== */
+        ======================= */
 
         .content{
-            margin-left:250px;
             padding:25px;
             min-height:calc(100vh - 120px);
         }
 
         /* =======================
             FOOTER
-        ======================== */
+        ======================= */
 
         .footer{
-            margin-left:250px;
             background:#198754;
             color:white;
             text-align:center;
@@ -114,7 +117,7 @@
 
         /* =======================
             MOBILE
-        ======================== */
+        ======================= */
 
         @media(max-width:768px){
 
@@ -127,7 +130,7 @@
             .navbar,
             .content,
             .footer{
-                margin-left:0;
+                margin-left:0 !important;
             }
 
         }
@@ -137,7 +140,9 @@
     {% block css %}{% endblock %}
 </head>
 
-<body>
+<body class="{% if user.is_authenticated %}authenticated{% endif %}">
+
+{% if user.is_authenticated %}
 
 <!-- ================= SIDEBAR ================= -->
 
@@ -151,7 +156,7 @@
                  class="logo"
                  alt="Logo">
 
-            <span class="logo-title"> GonaLink</span>
+            <span class="logo-title">GonaLink</span>
 
         </div>
 
@@ -161,76 +166,70 @@
         <i class="bi bi-house"></i> Accueil
     </a>
 
-    {% if not user.is_authenticated %}
+    <a href="{% url 'product_list' %}">
+        <i class="bi bi-grid"></i> Produits
+    </a>
 
-        <a href="{% url 'register' %}">
-            <i class="bi bi-person-plus"></i> Devenir vendeur
-        </a>
+    <a href="{% url 'cart' %}">
+        <i class="bi bi-cart3"></i> Panier
+    </a>
 
-        <a href="{% url 'login' %}">
-            <i class="bi bi-box-arrow-in-right"></i> Connexion
-        </a>
+    <a href="{% url 'profile' %}">
+        <i class="bi bi-person-circle"></i> Profil
+    </a>
 
-    {% endif %}
-
-    {% if user.is_authenticated %}
-
-        <a href="{% url 'product_list' %}">
-            <i class="bi bi-grid"></i> Produits
-        </a>
-
-        <a href="{% url 'cart' %}">
-            <i class="bi bi-cart3"></i> Panier
-        </a>
-
-        <a href="{% url 'profile' %}">
-            <i class="bi bi-person-circle"></i> Profil
-        </a>
-
-        <a href="{% url 'logout' %}">
-            <i class="bi bi-box-arrow-right"></i> Déconnexion
-        </a>
-
-    {% endif %}
+    <a href="{% url 'logout' %}">
+        <i class="bi bi-box-arrow-right"></i> Déconnexion
+    </a>
 
 </div>
 
-<!-- ================= NAVBAR BOOTSTRAP ================= -->
+{% endif %}
+
+<!-- ================= NAVBAR ================= -->
 
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm px-3">
 
     <div class="container-fluid">
 
-        <a class="navbar-brand fw-bold text-success" href="#">
+        <a class="navbar-brand fw-bold text-success" href="{% url 'home' %}">
             🌾 GonaLink
         </a>
 
-        <!-- Mobile toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Content -->
         <div class="collapse navbar-collapse" id="navbarContent">
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <ul class="navbar-nav me-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Accueil</a>
+                    <a class="nav-link" href="{% url 'home' %}">
+                        Accueil
+                    </a>
                 </li>
 
                 {% if user.is_authenticated %}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'product_list' %}">Produits</a>
+                    <a class="nav-link" href="{% url 'product_list' %}">
+                        Produits
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">Panier</a>
+                    <a class="nav-link" href="{% url 'cart' %}">
+                        Panier
+                    </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">Profil</a>
+                    <a class="nav-link" href="{% url 'profile' %}">
+                        Profil
+                    </a>
                 </li>
 
                 {% endif %}
@@ -240,23 +239,33 @@
             <div class="d-flex gap-2">
 
                 {% if user.is_authenticated %}
-                <a href="{% url 'cart' %}" class="btn btn-success btn-sm">
-                    🛒 Panier
-                </a>
 
-                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
-                    Déconnexion
-                </a>
+                    <a href="{% url 'cart' %}" class="btn btn-success btn-sm">
+                        🛒 Panier
+                    </a>
+
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
+                        Déconnexion
+                    </a>
+
                 {% else %}
-                <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">
-                    Connexion
-                </a>
+
+                    <a href="{% url 'register' %}" class="btn btn-success btn-sm">
+                        Devenir vendeur
+                    </a>
+
+                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">
+                        Connexion
+                    </a>
+
                 {% endif %}
 
             </div>
 
         </div>
+
     </div>
+
 </nav>
 
 <!-- ================= CONTENT ================= -->
@@ -274,7 +283,6 @@
     © 2026 GonaLink — Tous droits réservés 🌾
 </div>
 
-<!-- Bootstrap JS (IMPORTANT pour navbar mobile) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

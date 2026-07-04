@@ -4,23 +4,10 @@ from .models import Product #, Category
 from .forms import ProductForm
 from django.contrib.auth.decorators import user_passes_test
 
-
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 
-from .models import Product
 from orders.models import Order, OrderItem
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.db.models import Sum
-
-from .models import Product
-from orders.models import Order
-
-
 
 @login_required
 def dashboard(request):
