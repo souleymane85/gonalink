@@ -191,11 +191,16 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm px-3">
 
     <div class="container-fluid">
+<a class="navbar-brand d-flex align-items-center fw-bold text-success"
+   href="{% url 'home' %}">
 
-        <a class="navbar-brand fw-bold text-success" href="{% url 'home' %}">
-            🌾 GonaLink
-        </a>
+    <img src="{% static 'images/logo.jpeg' %}"
+         alt="Logo GonaLink"
+         style="width:42px;height:42px;border-radius:50%;object-fit:cover;margin-right:10px;">
 
+    <span>GonaLink</span>
+
+</a>
         <button class="navbar-toggler" type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarContent">
