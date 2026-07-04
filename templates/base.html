@@ -43,20 +43,19 @@
         }
 
         .logo{
-            width:32px;   /* ✅ LOGO RÉDUIT */
-            height:32px;
-            object-fit:cover;
-            border-radius:50%;
-            border:2px solid #fff;
-            margin-right:8px;
-        }
+    width:30px;
+    height:30px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid #fff;
+}
 
-        .logo-title{
-            font-size:18px; /* ✅ TITRE PLUS PETIT */
-            font-weight:bold;
-            color:white;
-            margin:0;
-        }
+.logo-title{
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+    margin:0;
+}
 
         .sidebar a{
             display:block;
@@ -163,17 +162,17 @@
 
     <div class="logo-container">
 
-        <h3 class="d-flex justify-content-center align-items-center logo-title">
+    <div class="d-flex align-items-center justify-content-center gap-2">
 
-            <img src="{% static 'images/logo.jpeg' %}"
-                 class="logo"
-                 alt="Logo">
+        <img src="{% static 'images/logo.jpeg' %}"
+             class="logo"
+             alt="Logo">
 
-            🌾 GonaLink
-
-        </h3>
+        <span class="logo-title">🌾 GonaLink</span>
 
     </div>
+
+</div>
 
     <a href="{% url 'home' %}">
         <i class="bi bi-house"></i> Accueil
