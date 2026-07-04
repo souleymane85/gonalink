@@ -3,6 +3,7 @@
 {% block content %}
 
 <style>
+
 /* ===== MARKETPLACE STYLE ===== */
 
 .marketplace-container {
@@ -18,13 +19,30 @@
     margin-bottom: 2rem;
 }
 
+/* ===== CARROUSEL WRAPPER ===== */
+.products-wrapper {
+    position: relative;
+}
+
+/* ===== CARROUSEL ===== */
 .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
     gap: 2rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+}
+
+/* cacher scrollbar */
+.products-grid::-webkit-scrollbar {
+    display: none;
 }
 
 .product-card {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
     background: white;
     border-radius: 10px;
     overflow: hidden;
@@ -85,52 +103,126 @@
 .btn-add:hover {
     background: #1f3d0f;
 }
+
+/* ===== BOUTONS CARROUSEL ===== */
+.carousel-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    background: rgba(45, 80, 22, 0.9);
+    color: white;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 20px;
+}
+
+.carousel-btn:hover {
+    background: #1f3d0f;
+}
+
+.carousel-btn.left {
+    left: -10px;
+}
+
+.carousel-btn.right {
+    right: -10px;
+}
+
 </style>
 
 <div class="marketplace-container">
 
     <div class="marketplace-header">
-        <h1>Marketplace Agricole</h1>
+        <h1>Marketplace Agricole 🌾</h1>
     </div>
 
-    <div class="products-grid">
+    <!-- ===== CARROUSEL ===== -->
+    <div class="products-wrapper">
 
-        {% for product in products %}
+        <button class="carousel-btn left" id="prevBtn">‹</button>
+        <button class="carousel-btn right" id="nextBtn">›</button>
 
-        <div class="product-card">
+        <div class="products-grid" id="carousel">
 
-            <div class="product-image">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}">
-                {% endif %}
-            </div>
+            {% for product in products %}
 
-            <div class="product-info">
+            <div class="product-card">
 
-                <div class="product-name">
-                    {{ product.name }}
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}">
+                    {% endif %}
                 </div>
 
-                <div class="product-price">
-                    {{ product.price }} FCFA / {{ product.unit }}
+                <div class="product-info">
+
+                    <div class="product-name">
+                        {{ product.name }}
+                    </div>
+
+                    <div class="product-price">
+                        {{ product.price }} FCFA / {{ product.unit }}
+                    </div>
+
+                    <a href="/cart/add/{{ product.id }}/" class="btn-add">
+                        Ajouter au panier
+                    </a>
+
                 </div>
 
-                <a href="/cart/add/{{ product.id }}/" class="btn-add">
-                    Ajouter au panier
-                </a>
-
             </div>
+
+            {% empty %}
+            <p>Aucun produit disponible</p>
+            {% endfor %}
 
         </div>
-
-        {% empty %}
-
-        <p>Aucun produit disponible</p>
-
-        {% endfor %}
-
     </div>
 
 </div>
+
+<!-- ===== AUTOPLAY JS ===== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const container = document.getElementById("carousel");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    if (!container) return;
+
+    let step = 300;
+    let isPaused = false;
+
+    // AUTOPLAY
+    let interval = setInterval(() => {
+        if (isPaused) return;
+
+        if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
+            container.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+            container.scrollBy({ left: step, behavior: "smooth" });
+        }
+    }, 2500);
+
+    // PAUSE AU HOVER
+    container.addEventListener("mouseenter", () => isPaused = true);
+    container.addEventListener("mouseleave", () => isPaused = false);
+
+    // BOUTONS
+    nextBtn.addEventListener("click", () => {
+        container.scrollBy({ left: step, behavior: "smooth" });
+    });
+
+    prevBtn.addEventListener("click", () => {
+        container.scrollBy({ left: -step, behavior: "smooth" });
+    });
+
+});
+</script>
 
 {% endblock %}
