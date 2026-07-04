@@ -169,6 +169,13 @@
     <a href="{% url 'product_list' %}">
         <i class="bi bi-grid"></i> Produits
     </a>
+    <a href="{% url 'product_create' %}">
+    <i class="bi bi-grid"></i> Ajouter un produit
+</a>
+
+<a href="{% url 'dashboard' %}">
+    <i class="bi bi-grid"></i> Tableau de bord
+</a>
 
     <a href="{% url 'cart' %}">
         <i class="bi bi-cart3"></i> Panier
@@ -226,13 +233,7 @@
                         Produits
                     </a>
                 </li>
-<a href="{% url 'product_create' %}">
-    <i class="bi bi-plus-circle"></i> Ajouter un produit
-</a>
 
-<a href="{% url 'dashboard' %}">
-    <i class="bi bi-plus-circle"></i> Tableau de bord
-</a>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'cart' %}">
                         Panier
