@@ -1,0 +1,1028 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .profile-page {
+        padding: 24px 0 45px;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .profile-header {
+        background: linear-gradient(135deg, #174d2a, #198754);
+        border-radius: 18px;
+        padding: 28px 30px;
+        color: white;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 30px rgba(25, 135, 84, .15);
+    }
+
+    .profile-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .profile-header-left {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .profile-header-avatar {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: rgba(255,255,255,.18);
+        border: 2px solid rgba(255,255,255,.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .profile-header h2 {
+        margin: 0 0 5px;
+        font-size: 27px;
+        font-weight: 800;
+    }
+
+    .profile-header p {
+        margin: 0;
+        opacity: .88;
+        font-size: 14px;
+    }
+
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        background: rgba(255,255,255,.16);
+        border: 1px solid rgba(255,255,255,.25);
+        padding: 9px 15px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    /* =========================
+       GRID
+    ========================= */
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 24px;
+    }
+
+    .profile-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 18px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .card-header-custom {
+        padding: 18px 22px;
+        border-bottom: 1px solid #edf0f2;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        color: #1f2937;
+        background: #fff;
+    }
+
+    .card-header-custom i {
+        color: #198754;
+        font-size: 19px;
+    }
+
+    .card-body-custom {
+        padding: 24px;
+    }
+
+    /* =========================
+       SUMMARY
+    ========================= */
+
+    .profile-summary {
+        text-align: center;
+        padding: 30px 22px;
+    }
+
+    .profile-avatar-large {
+        width: 110px;
+        height: 110px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #198754, #32a66a);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 38px;
+        font-weight: 800;
+        box-shadow: 0 10px 25px rgba(25, 135, 84, .20);
+    }
+
+    .profile-summary h3 {
+        font-size: 21px;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 5px;
+    }
+
+    .profile-username {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .status-active {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 13px;
+        border-radius: 50px;
+        background: #eaf7ef;
+        color: #198754;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #198754;
+        border-radius: 50%;
+    }
+
+    .profile-contact {
+        margin-top: 25px;
+        text-align: left;
+    }
+
+    .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 13px 0;
+        border-bottom: 1px solid #f0f2f4;
+    }
+
+    .contact-item:last-child {
+        border-bottom: none;
+    }
+
+    .contact-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 10px;
+        background: #eaf7ef;
+        color: #198754;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .contact-label {
+        font-size: 11px;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin-bottom: 2px;
+    }
+
+    .contact-value {
+        font-size: 14px;
+        color: #374151;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    /* =========================
+       FORMULAIRE
+    ========================= */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .form-group-custom {
+        margin-bottom: 0;
+    }
+
+    .form-group-custom.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label-custom {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .form-control-custom,
+    .form-select-custom,
+    .form-group-custom input,
+    .form-group-custom select,
+    .form-group-custom textarea {
+        width: 100%;
+        min-height: 46px;
+        border: 1px solid #dfe3e8;
+        border-radius: 10px;
+        padding: 10px 13px;
+        background: #fff;
+        color: #1f2937;
+        font-size: 14px;
+        transition: .2s ease;
+        outline: none;
+    }
+
+    .form-group-custom textarea {
+        min-height: 110px;
+        resize: vertical;
+    }
+
+    .form-group-custom input:focus,
+    .form-group-custom select:focus,
+    .form-group-custom textarea:focus {
+        border-color: #198754;
+        box-shadow: 0 0 0 3px rgba(25, 135, 84, .10);
+    }
+
+    .help-text {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 5px;
+    }
+
+    .error-list {
+        margin: 6px 0 0;
+        padding: 0;
+        list-style: none;
+        color: #dc3545;
+        font-size: 12px;
+    }
+
+    .form-errors {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+        padding: 13px 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+    }
+
+    /* =========================
+       BOUTONS
+    ========================= */
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #edf0f2;
+    }
+
+    .btn-save {
+        border: none;
+        background: #198754;
+        color: white;
+        padding: 11px 22px;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: .2s ease;
+        cursor: pointer;
+    }
+
+    .btn-save:hover {
+        background: #157347;
+        transform: translateY(-1px);
+        color: white;
+    }
+
+    .btn-reset {
+        border: 1px solid #dfe3e8;
+        background: white;
+        color: #4b5563;
+        padding: 10px 18px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    .btn-reset:hover {
+        background: #f8faf9;
+        color: #198754;
+        border-color: #198754;
+    }
+
+    /* =========================
+       INFORMATIONS COMPTE
+    ========================= */
+
+    .account-info {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .account-item {
+        padding: 15px;
+        background: #f8faf9;
+        border-radius: 12px;
+        border: 1px solid #edf0f2;
+    }
+
+    .account-item-label {
+        color: #9ca3af;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+
+    .account-item-value {
+        color: #1f2937;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* =========================
+       MESSAGES
+    ========================= */
+
+    .message-alert {
+        border-radius: 12px;
+        margin-bottom: 20px;
+        padding: 13px 16px;
+        font-size: 14px;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 991px) {
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-summary {
+            padding: 25px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .profile-page {
+            padding: 15px 0 30px;
+        }
+
+        .profile-header {
+            padding: 22px;
+        }
+
+        .profile-header-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .profile-header h2 {
+            font-size: 23px;
+        }
+
+        .form-grid,
+        .account-info {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group-custom.full-width {
+            grid-column: auto;
+        }
+
+        .card-body-custom {
+            padding: 18px;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .btn-save,
+        .btn-reset {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .profile-header-left {
+            align-items: flex-start;
+        }
+
+        .profile-header-avatar {
+            width: 58px;
+            height: 58px;
+            font-size: 22px;
+        }
+
+        .profile-header h2 {
+            font-size: 20px;
+        }
+
+        .role-badge {
+            font-size: 12px;
+        }
+    }
+</style>
+
+
+<div class="profile-page">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+
+    <div class="profile-header">
+
+        <div class="profile-header-content">
+
+            <div class="profile-header-left">
+
+                <div class="profile-header-avatar">
+
+                    {% if request.user.first_name %}
+                        {{ request.user.first_name|first|upper }}
+                    {% elif request.user.username %}
+                        {{ request.user.username|first|upper }}
+                    {% else %}
+                        U
+                    {% endif %}
+
+                </div>
+
+                <div>
+
+                    <h2>Mon profil</h2>
+
+                    <p>
+                        Gérez vos informations personnelles et votre compte GonaLink.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="role-badge">
+
+                <i class="bi bi-person-badge"></i>
+
+                {% if request.user.is_superuser %}
+                    Administrateur système
+                {% elif request.user.role == "ADMIN" %}
+                    Administrateur
+                {% elif request.user.role == "VENDEUR" %}
+                    Vendeur
+                {% else %}
+                    Utilisateur
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         MESSAGES
+    ========================== -->
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="alert alert-{{ message.tags|default:'info' }} message-alert">
+
+                <i class="bi bi-check-circle me-2"></i>
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+
+    <!-- =========================
+         CONTENU
+    ========================== -->
+
+    <div class="profile-grid">
+
+        <!-- =========================
+             COLONNE GAUCHE
+        ========================== -->
+
+        <div>
+
+            <div class="profile-card">
+
+                <div class="profile-summary">
+
+                    <div class="profile-avatar-large">
+
+                        {% if request.user.first_name %}
+                            {{ request.user.first_name|first|upper }}
+                        {% elif request.user.username %}
+                            {{ request.user.username|first|upper }}
+                        {% else %}
+                            U
+                        {% endif %}
+
+                    </div>
+
+                    <h3>
+
+                        {% if request.user.get_full_name %}
+                            {{ request.user.get_full_name }}
+                        {% else %}
+                            {{ request.user.username }}
+                        {% endif %}
+
+                    </h3>
+
+                    <div class="profile-username">
+                        @{{ request.user.username }}
+                    </div>
+
+                    <span class="status-active">
+
+                        <span class="status-dot"></span>
+
+                        Compte actif
+
+                    </span>
+
+
+                    <!-- CONTACT -->
+
+                    <div class="profile-contact">
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="contact-label">
+                                    Email
+                                </div>
+
+                                <div class="contact-value">
+
+                                    {% if request.user.email %}
+                                        {{ request.user.email }}
+                                    {% else %}
+                                        Non renseigné
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="contact-label">
+                                    Téléphone
+                                </div>
+
+                                <div class="contact-value">
+
+                                    {% if request.user.phone %}
+                                        {{ request.user.phone }}
+                                    {% else %}
+                                        Non renseigné
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                <i class="bi bi-person"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="contact-label">
+                                    Identifiant
+                                </div>
+
+                                <div class="contact-value">
+                                    {{ request.user.username }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="contact-item">
+
+                            <div class="contact-icon">
+                                <i class="bi bi-calendar3"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="contact-label">
+                                    Membre depuis
+                                </div>
+
+                                <div class="contact-value">
+
+                                    {{ request.user.date_joined|date:"d/m/Y" }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATIONS COMPTE -->
+
+            <div class="profile-card">
+
+                <div class="card-header-custom">
+
+                    <i class="bi bi-shield-check"></i>
+
+                    Sécurité du compte
+
+                </div>
+
+                <div class="card-body-custom">
+
+                    <div class="account-info">
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Statut
+                            </div>
+
+                            <div class="account-item-value">
+
+                                {% if request.user.is_active %}
+                                    <span class="text-success">
+                                        <i class="bi bi-check-circle"></i>
+                                        Actif
+                                    </span>
+                                {% else %}
+                                    <span class="text-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                        Inactif
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Type de compte
+                            </div>
+
+                            <div class="account-item-value">
+
+                                {% if request.user.is_superuser %}
+                                    Super administrateur
+                                {% elif request.user.role == "ADMIN" %}
+                                    Administrateur
+                                {% elif request.user.role == "VENDEUR" %}
+                                    Vendeur
+                                {% else %}
+                                    Utilisateur
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             COLONNE DROITE
+        ========================== -->
+
+        <div>
+
+            <div class="profile-card">
+
+                <div class="card-header-custom">
+
+                    <i class="bi bi-person-vcard"></i>
+
+                    Informations personnelles
+
+                </div>
+
+
+                <div class="card-body-custom">
+
+                    {% if form.non_field_errors %}
+
+                        <div class="form-errors">
+
+                            <strong>
+                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                Impossible d'enregistrer les modifications.
+                            </strong>
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    <form method="post" novalidate>
+
+                        {% csrf_token %}
+
+
+                        <div class="form-grid">
+
+                            {% for field in form %}
+
+                                <div class="form-group-custom
+                                    {% if field.name == 'address' or field.name == 'adresse' or field.name == 'description' %}
+                                        full-width
+                                    {% endif %}
+                                ">
+
+                                    <label
+                                        for="{{ field.id_for_label }}"
+                                        class="form-label-custom"
+                                    >
+                                        {{ field.label }}
+
+                                        {% if field.field.required %}
+                                            <span class="text-danger">*</span>
+                                        {% endif %}
+
+                                    </label>
+
+
+                                    {{ field }}
+
+
+                                    {% if field.help_text %}
+
+                                        <div class="help-text">
+                                            {{ field.help_text }}
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    {% if field.errors %}
+
+                                        <ul class="error-list">
+
+                                            {% for error in field.errors %}
+
+                                                <li>
+                                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                                    {{ error }}
+                                                </li>
+
+                                            {% endfor %}
+
+                                        </ul>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="form-actions">
+
+                            <a
+                                href="{% url 'home' %}"
+                                class="btn-reset"
+                            >
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Retour
+                            </a>
+
+                            <button
+                                type="submit"
+                                class="btn-save"
+                                id="saveProfileBtn"
+                            >
+                                <i class="bi bi-check-lg me-1"></i>
+                                Enregistrer les modifications
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATIONS DE COMPTE -->
+
+            <div class="profile-card">
+
+                <div class="card-header-custom">
+
+                    <i class="bi bi-info-circle"></i>
+
+                    Informations du compte
+
+                </div>
+
+                <div class="card-body-custom">
+
+                    <div class="account-info">
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Nom d'utilisateur
+                            </div>
+
+                            <div class="account-item-value">
+                                {{ request.user.username }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Rôle
+                            </div>
+
+                            <div class="account-item-value">
+
+                                {% if request.user.is_superuser %}
+                                    Administrateur système
+                                {% elif request.user.role == "ADMIN" %}
+                                    Administrateur
+                                {% elif request.user.role == "VENDEUR" %}
+                                    Vendeur
+                                {% else %}
+                                    Utilisateur
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Date d'inscription
+                            </div>
+
+                            <div class="account-item-value">
+                                {{ request.user.date_joined|date:"d/m/Y à H:i" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="account-item">
+
+                            <div class="account-item-label">
+                                Dernière connexion
+                            </div>
+
+                            <div class="account-item-value">
+
+                                {% if request.user.last_login %}
+                                    {{ request.user.last_login|date:"d/m/Y à H:i" }}
+                                {% else %}
+                                    Première connexion
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const form = document.querySelector("form");
+    const button = document.getElementById("saveProfileBtn");
+
+    if (form && button) {
+
+        form.addEventListener("submit", function () {
+
+            button.disabled = true;
+
+            button.innerHTML = `
+                <span
+                    class="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                ></span>
+                Enregistrement...
+            `;
+
+        });
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,114 +1,1764 @@
+
 {% extends 'base.html' %}
 
+{% block title %}Tableau de bord — GonaLink{% endblock %}
 
-{% block title %}Dashboard{% endblock %}
+{% block css %}
 
+<style>
+
+/* =========================================================
+   DASHBOARD GONALINK
+   ========================================================= */
+
+.dashboard-page {
+    width: 100%;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 28px;
+
+    gap: 20px;
+}
+
+.dashboard-title {
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.dashboard-title-icon {
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #198754,
+            #146c43
+        );
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    box-shadow:
+        0 8px 20px rgba(25,135,84,.20);
+}
+
+.dashboard-title h1 {
+
+    margin: 0;
+
+    color: #173b25;
+
+    font-size: 1.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+}
+
+.dashboard-title p {
+
+    margin: 4px 0 0;
+
+    color: #6b7280;
+
+    font-size: .88rem;
+}
+
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.welcome-box {
+
+    background:
+        linear-gradient(
+            135deg,
+            #edf8f1,
+            #f8fbf9
+        );
+
+    border:
+        1px solid #d9eee0;
+
+    border-radius: 16px;
+
+    padding: 15px 20px;
+
+    margin-bottom: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    color: #365443;
+}
+
+.welcome-box i {
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    background: white;
+
+    color: #198754;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.05);
+}
+
+.welcome-box strong {
+    color: #174d2a;
+}
+
+
+/* =========================================================
+   STAT CARDS
+   ========================================================= */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 25px;
+}
+
+
+.stat-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    background: white;
+
+    border:
+        1px solid #e6e9e7;
+
+    border-radius: 17px;
+
+    padding: 20px;
+
+    min-height: 155px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.045);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.stat-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    box-shadow:
+        0 12px 28px rgba(0,0,0,.09);
+}
+
+
+.stat-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 110px;
+    height: 110px;
+
+    right: -45px;
+    bottom: -50px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.15);
+}
+
+
+.stat-top {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+}
+
+
+.stat-icon {
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+
+    color: white;
+}
+
+
+.stat-number {
+
+    margin-top: 17px;
+
+    font-size: 1.7rem;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    color: #17201a;
+}
+
+
+.stat-label {
+
+    margin-top: 7px;
+
+    color: #6b7280;
+
+    font-size: .82rem;
+
+    font-weight: 600;
+}
+
+
+.stat-link {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 14px;
+
+    font-size: .74rem;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+/* couleurs */
+
+.stat-green .stat-icon {
+    background: #198754;
+}
+
+.stat-green .stat-link {
+    color: #198754;
+}
+
+
+.stat-blue .stat-icon {
+    background: #0d6efd;
+}
+
+.stat-blue .stat-link {
+    color: #0d6efd;
+}
+
+
+.stat-orange .stat-icon {
+    background: #f59e0b;
+}
+
+.stat-orange .stat-link {
+    color: #d97706;
+}
+
+
+.stat-red .stat-icon {
+    background: #dc3545;
+}
+
+.stat-red .stat-link {
+    color: #dc3545;
+}
+
+
+/* =========================================================
+   FINANCIAL CARDS
+   ========================================================= */
+
+.financial-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 30px;
+}
+
+
+.financial-card {
+
+    border-radius: 17px;
+
+    padding: 21px;
+
+    color: white;
+
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 130px;
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.08);
+}
+
+
+.financial-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 150px;
+    height: 150px;
+
+    right: -70px;
+    top: -65px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.10);
+}
+
+
+.financial-card.dark {
+
+    background:
+        linear-gradient(
+            135deg,
+            #212529,
+            #343a40
+        );
+}
+
+
+.financial-card.blue {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0879d1,
+            #0d6efd
+        );
+}
+
+
+.financial-card.green {
+
+    background:
+        linear-gradient(
+            135deg,
+            #16834f,
+            #198754
+        );
+}
+
+
+.financial-icon {
+
+    font-size: 20px;
+
+    opacity: .85;
+
+    margin-bottom: 12px;
+}
+
+
+.financial-value {
+
+    font-size: 1.45rem;
+
+    font-weight: 800;
+
+    line-height: 1.1;
+}
+
+
+.financial-label {
+
+    margin-top: 7px;
+
+    font-size: .78rem;
+
+    opacity: .82;
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.dashboard-section {
+
+    background: white;
+
+    border:
+        1px solid #e5e7eb;
+
+    border-radius: 17px;
+
+    margin-bottom: 25px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.04);
+}
+
+
+.section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 18px 20px;
+
+    border-bottom:
+        1px solid #edf0ee;
+
+    gap: 15px;
+}
+
+
+.section-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.section-title-icon {
+
+    width: 36px;
+    height: 36px;
+
+    border-radius: 10px;
+
+    background: #eaf7ef;
+
+    color: #198754;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+
+.section-title h3 {
+
+    margin: 0;
+
+    font-size: 1rem;
+
+    font-weight: 800;
+
+    color: #1f2937;
+}
+
+
+.section-title p {
+
+    margin: 2px 0 0;
+
+    font-size: .72rem;
+
+    color: #8a9199;
+}
+
+
+.section-body {
+
+    padding: 0;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.dashboard-table {
+
+    width: 100%;
+
+    margin: 0;
+
+    border-collapse: collapse;
+}
+
+
+.dashboard-table thead th {
+
+    background: #f8faf9;
+
+    color: #6b7280;
+
+    font-size: .72rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .4px;
+
+    padding: 13px 18px;
+
+    border-bottom:
+        1px solid #e9ecef;
+
+    white-space: nowrap;
+}
+
+
+.dashboard-table tbody td {
+
+    padding: 14px 18px;
+
+    border-bottom:
+        1px solid #f0f1f2;
+
+    color: #374151;
+
+    font-size: .84rem;
+
+    vertical-align: middle;
+}
+
+
+.dashboard-table tbody tr {
+
+    transition: background .2s ease;
+}
+
+
+.dashboard-table tbody tr:hover {
+
+    background: #f8fbf9;
+}
+
+
+.dashboard-table tbody tr:last-child td {
+
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   PRODUCT NAME
+   ========================================================= */
+
+.product-name-cell {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-weight: 700;
+
+    color: #27322b;
+}
+
+
+.product-icon {
+
+    width: 34px;
+    height: 34px;
+
+    border-radius: 9px;
+
+    background: #eaf7ef;
+
+    color: #198754;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   USER
+   ========================================================= */
+
+.vendor-cell {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+}
+
+
+.vendor-avatar {
+
+    width: 31px;
+    height: 31px;
+
+    border-radius: 50%;
+
+    background:
+        #eaf7ef;
+
+    color:
+        #198754;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: .78rem;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.stock-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    font-size: .68rem;
+
+    font-weight: 800;
+}
+
+
+.stock-normal {
+
+    color: #198754;
+
+    background: #eaf7ef;
+}
+
+
+.stock-low {
+
+    color: #b77900;
+
+    background: #fff4d6;
+}
+
+
+.stock-out {
+
+    color: #c92a3d;
+
+    background: #fdecef;
+}
+
+
+.status-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 5px 10px;
+
+    border-radius: 999px;
+
+    background: #eef2f5;
+
+    color: #59636e;
+
+    font-size: .68rem;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ACTION BUTTON
+   ========================================================= */
+
+.btn-view {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 6px 11px;
+
+    border-radius: 8px;
+
+    background: #eaf2ff;
+
+    color: #0d6efd;
+
+    font-size: .72rem;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition: .2s;
+}
+
+
+.btn-view:hover {
+
+    background: #0d6efd;
+
+    color: white;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.empty-state {
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    color: #8a9199;
+}
+
+
+.empty-icon {
+
+    width: 55px;
+    height: 55px;
+
+    margin: 0 auto 12px;
+
+    border-radius: 50%;
+
+    background: #f1f4f2;
+
+    color: #8a9690;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+
+.empty-state strong {
+
+    display: block;
+
+    color: #4b5563;
+
+    font-size: .88rem;
+
+    margin-bottom: 4px;
+}
+
+
+.empty-state span {
+
+    font-size: .75rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .financial-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-header {
+
+        align-items: flex-start;
+
+    }
+
+    .dashboard-title h1 {
+
+        font-size: 1.4rem;
+
+    }
+
+    .stats-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .welcome-box {
+
+        font-size: .82rem;
+
+    }
+
+    .dashboard-section {
+
+        overflow-x: auto;
+
+    }
+
+    .dashboard-table {
+
+        min-width: 650px;
+
+    }
+
+}
+
+
+</style>
+
+{% endblock %}
 
 
 {% block content %}
 
-
-<h2>Dashboard</h2>
-
-<p>
-Bienvenue
-<strong>{{ user.username }}</strong>
-</p>
+<div class="dashboard-page">
 
 
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="dashboard-header">
+
+        <div class="dashboard-title">
+
+            <div class="dashboard-title-icon">
+
+                <i class="bi bi-speedometer2"></i>
+
+            </div>
+
+            <div>
+
+                <h1>
+                    Tableau de bord
+                </h1>
+
+                <p>
+                    Vue d'ensemble de votre activité GonaLink
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
+    <!-- =====================================================
+         BIENVENUE
+    ====================================================== -->
 
-<!-- CARTES PRINCIPALES -->
+    <div class="welcome-box">
+
+        <i class="bi bi-person-check"></i>
+
+        <div>
+
+            Bienvenue,
+            <strong>{{ user.username }}</strong> 👋
+
+        </div>
+
+    </div>
 
 
-<div class="row mt-4">
+    <!-- =====================================================
+         STATISTIQUES PRINCIPALES
+    ====================================================== -->
+
+    <div class="stats-grid">
 
 
+        <!-- PRODUITS -->
 
-    <!-- PRODUITS -->
+        <div class="stat-card stat-green">
 
-    <div class="col-md-3">
+            <div class="stat-top">
 
-        <div class="p-3 bg-success text-white rounded">
+                <div class="stat-icon">
 
-            <h4>{{ total_products|default:0 }}</h4>
+                    <i class="bi bi-box-seam"></i>
 
-            <p>Produits</p>
-             <!-- LIEN LISTE COMMANDES -->
+                </div>
 
-            <a href="{% url 'product_list' %}"
-               class="btn btn-light btn-sm mt-2">
+            </div>
 
-                Voirproduits
+            <div class="stat-number">
+
+                {{ total_products|default:0 }}
+
+            </div>
+
+            <div class="stat-label">
+
+                Produits
+
+            </div>
+
+            <a
+                href="{% url 'product_list' %}"
+                class="stat-link">
+
+                Voir les produits
+
+                <i class="bi bi-arrow-right"></i>
 
             </a>
 
         </div>
 
-    </div>
 
+        <!-- COMMANDES -->
 
+        <div class="stat-card stat-blue">
 
+            <div class="stat-top">
 
+                <div class="stat-icon">
 
-    <!-- COMMANDES -->
+                    <i class="bi bi-bag-check"></i>
 
-    <div class="col-md-3">
+                </div>
 
-        <div class="p-3 bg-primary text-white rounded">
+            </div>
 
-            <h4>{{ total_orders|default:0 }}</h4>
+            <div class="stat-number">
 
-            <p>Commandes</p>
+                {{ total_orders|default:0 }}
 
+            </div>
 
+            <div class="stat-label">
 
-            <!-- LIEN LISTE COMMANDES -->
+                Commandes
 
-            <a href="{% url 'order_list' %}"
-               class="btn btn-light btn-sm mt-2">
+            </div>
 
-                Voir commandes
+            <a
+                href="{% url 'order_list' %}"
+                class="stat-link">
+
+                Voir les commandes
+
+                <i class="bi bi-arrow-right"></i>
 
             </a>
 
+        </div>
+
+
+        <!-- STOCK FAIBLE -->
+
+        <div class="stat-card stat-orange">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="bi bi-exclamation-triangle"></i>
+
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+
+                {{ low_stock|default:0 }}
+
+            </div>
+
+            <div class="stat-label">
+
+                Stock faible
+
+            </div>
+
+            <div class="stat-link">
+
+                <i class="bi bi-box"></i>
+
+                À surveiller
+
+            </div>
+
+        </div>
+
+
+        <!-- RUPTURE -->
+
+        <div class="stat-card stat-red">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+
+                    <i class="bi bi-x-circle"></i>
+
+                </div>
+
+            </div>
+
+            <div class="stat-number">
+
+                {{ out_of_stock|default:0 }}
+
+            </div>
+
+            <div class="stat-label">
+
+                Produits en rupture
+
+            </div>
+
+            <div class="stat-link">
+
+                <i class="bi bi-exclamation-circle"></i>
+
+                À réapprovisionner
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         FINANCES / COMMANDES
+    ====================================================== -->
+
+    <div class="financial-grid">
+
+
+        <!-- CA -->
+
+        <div class="financial-card dark">
+
+            <div class="financial-icon">
+
+                <i class="bi bi-cash-stack"></i>
+
+            </div>
+
+            <div class="financial-value">
+
+                {{ revenue|default:0 }} FCFA
+
+            </div>
+
+            <div class="financial-label">
+
+                Chiffre d'affaires
+
+            </div>
+
+        </div>
+
+
+        <!-- EN ATTENTE -->
+
+        <div class="financial-card blue">
+
+            <div class="financial-icon">
+
+                <i class="bi bi-hourglass-split"></i>
+
+            </div>
+
+            <div class="financial-value">
+
+                {{ pending_orders|default:0 }}
+
+            </div>
+
+            <div class="financial-label">
+
+                Commandes en attente
+
+            </div>
+
+        </div>
+
+
+        <!-- LIVRÉES -->
+
+        <div class="financial-card green">
+
+            <div class="financial-icon">
+
+                <i class="bi bi-check2-circle"></i>
+
+            </div>
+
+            <div class="financial-value">
+
+                {{ delivered_orders|default:0 }}
+
+            </div>
+
+            <div class="financial-label">
+
+                Commandes livrées
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         VENDEURS
+         ADMIN UNIQUEMENT
+    ====================================================== -->
+
+    {% if is_admin %}
+
+    <div class="dashboard-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <div class="section-title-icon">
+
+                    <i class="bi bi-people"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Vendeurs
+                    </h3>
+
+                    <p>
+                        Activité des vendeurs de la plateforme
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="section-body">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Vendeur
+                        </th>
+
+                        <th>
+                            Produits
+                        </th>
+
+                        <th>
+                            Commandes
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for vendor in vendors %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="vendor-cell">
+
+                                <div class="vendor-avatar">
+
+                                    <i class="bi bi-person"></i>
+
+                                </div>
+
+                                <strong>
+                                    {{ vendor.username }}
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ vendor.nb_products }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ vendor.nb_orders }}
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="3">
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="bi bi-people"></i>
+
+                                </div>
+
+                                <strong>
+                                    Aucun vendeur
+                                </strong>
+
+                                <span>
+                                    Aucun vendeur n'est disponible.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         PRODUITS RÉCENTS
+    ====================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <div class="section-title-icon">
+
+                    <i class="bi bi-box-seam"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Produits récents
+                    </h3>
+
+                    <p>
+                        Les derniers produits ajoutés
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'product_list' %}"
+                class="btn-view">
+
+                Voir tout
+
+                <i class="bi bi-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="section-body">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Produit
+                        </th>
+
+                        <th>
+                            Prix
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Catégorie
+                        </th>
+
+                        <th>
+                            Vendeur
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                {% for product in recent_products %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="product-name-cell">
+
+                                <div class="product-icon">
+
+                                    <i class="bi bi-basket"></i>
+
+                                </div>
+
+                                {{ product.name }}
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                {{ product.price }} FCFA
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if product.stock == 0 %}
+
+                                <span class="stock-badge stock-out">
+
+                                    <i class="bi bi-x-circle"></i>
+
+                                    Rupture
+
+                                </span>
+
+                            {% elif product.stock <= 5 %}
+
+                                <span class="stock-badge stock-low">
+
+                                    <i class="bi bi-exclamation-circle"></i>
+
+                                    {{ product.stock }}
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="stock-badge stock-normal">
+
+                                    <i class="bi bi-check-circle"></i>
+
+                                    {{ product.stock }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ product.get_category_display }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="vendor-cell">
+
+                                <div class="vendor-avatar">
+
+                                    <i class="bi bi-person"></i>
+
+                                </div>
+
+                                {{ product.seller.username }}
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="bi bi-box-seam"></i>
+
+                                </div>
+
+                                <strong>
+                                    Aucun produit
+                                </strong>
+
+                                <span>
+                                    Aucun produit récent à afficher.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
 
 
+    <!-- =====================================================
+         COMMANDES RÉCENTES
+    ====================================================== -->
+
+    <div class="dashboard-section">
+
+        <div class="section-header">
+
+            <div class="section-title">
+
+                <div class="section-title-icon">
+
+                    <i class="bi bi-receipt"></i>
+
+                </div>
+
+                <div>
+
+                    <h3>
+                        Dernières commandes
+                    </h3>
+
+                    <p>
+                        Activité récente des commandes
+                    </p>
+
+                </div>
+
+            </div>
 
 
+            <a
+                href="{% url 'order_list' %}"
+                class="btn-view">
 
-    <!-- STOCK FAIBLE -->
+                Toutes les commandes
 
-    <div class="col-md-3">
+                <i class="bi bi-arrow-right"></i>
 
-        <div class="p-3 bg-warning text-white rounded">
-
-            <h4>{{ low_stock|default:0 }}</h4>
-
-            <p>Stock faible</p>
+            </a>
 
         </div>
 
-    </div>
+
+        <div class="section-body">
+
+            <table class="dashboard-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Client
+                        </th>
+
+                        <th>
+                            Téléphone
+                        </th>
+
+                        <th>
+                            Montant
+                        </th>
+
+                        <th>
+                            Statut
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
 
 
+                <tbody>
+
+                {% for order in recent_orders %}
+
+                    <tr>
+
+                        <td>
+
+                            <div class="vendor-cell">
+
+                                <div class="vendor-avatar">
+
+                                    <i class="bi bi-person"></i>
+
+                                </div>
+
+                                <strong>
+                                    {{ order.name }}
+                                </strong>
+
+                            </div>
+
+                        </td>
 
 
+                        <td>
 
-    <!-- RUPTURE -->
+                            <span class="text-muted">
 
-    <div class="col-md-3">
+                                <i class="bi bi-telephone"></i>
 
-        <div class="p-3 bg-danger text-white rounded">
+                                {{ order.phone }}
 
-            <h4>{{ out_of_stock|default:0 }}</h4>
+                            </span>
 
-            <p>Rupture</p>
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                {{ order.total }} FCFA
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status-badge">
+
+                                {{ order.get_status_display }}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{% url 'order_detail' order.id %}"
+                                class="btn-view">
+
+                                <i class="bi bi-eye"></i>
+
+                                Voir
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+
+                {% empty %}
+
+                    <tr>
+
+                        <td colspan="5">
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="bi bi-receipt"></i>
+
+                                </div>
+
+                                <strong>
+                                    Aucune commande
+                                </strong>
+
+                                <span>
+                                    Les commandes récentes apparaîtront ici.
+                                </span>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
 
         </div>
 
@@ -117,200 +1767,5 @@ Bienvenue
 
 </div>
 
-
-
-
-
-<!-- VENTES -->
-
-<div class="row mt-4">
-
-
-
-    <div class="col-md-4">
-
-        <div class="p-3 bg-dark text-white rounded">
-
-            <h4>{{ revenue|default:0 }} FCFA</h4>
-
-            <p>Chiffre d'affaires</p>
-
-        </div>
-
-    </div>
-
-
-
-
-
-    <div class="col-md-4">
-
-        <div class="p-3 bg-info text-white rounded">
-
-            <h4>{{ pending_orders|default:0 }}</h4>
-
-            <p>Commandes en attente</p>
-
-        </div>
-
-    </div>
-
-
-
-
-
-    <div class="col-md-4">
-
-        <div class="p-3 bg-secondary text-white rounded">
-
-            <h4>{{ delivered_orders|default:0 }}</h4>
-
-            <p>Commandes livrées</p>
-
-        </div>
-
-    </div>
-
-
-
-</div>
-
-
-
-
-
-<!-- PRODUITS RECENTS -->
-
-
-<div class="mt-5">
-
-
-<h4>Produits récents</h4>
-
-
-
-<table class="table table-striped mt-3">
-
-
-<thead>
-
-<tr>
-
-<th>Nom</th>
-
-<th>Prix</th>
-
-<th>Stock</th>
-
-<th>Catégorie</th>
-
-<th>Vendeur</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody>
-
-
-
-{% for product in recent_products %}
-
-<tr>
-
-<td>{{ product.name }}</td>
-
-<td>{{ product.price }} FCFA</td>
-
-<td>{{ product.stock }}</td>
-
-<td>{{ product.get_category_display }}</td>
-
-<td>{{ product.seller.username }}</td>
-
-</tr>
-
-
-
-{% empty %}
-
-<tr>
-
-<td colspan="5">Aucun produit</td>
-
-</tr>
-
-{% endfor %}
-</tbody>
-
-</table>
-</div>
-<!-- COMMANDES RECENTES -->
-<div class="mt-5">
-<h4>
-Dernières commandes
-</h4>
-<table class="table table-bordered">
-<thead>
-<tr>
-<th>Client</th>
-<th>Téléphone</th>
-
-<th>Montant</th>
-
-<th>Statut</th>
-
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-
-
-<tbody>
-
-
-
-{% for order in recent_orders %}
-
-<tr>
-
-<td>{{ order.name }}</td>
-
-<td>{{ order.phone }}</td>
-
-<td>{{ order.total }} FCFA</td>
-
-<td>{{ order.get_status_display }}</td>
-
-<td>
-
-<a href="{% url 'order_detail' order.id %}"
-   class="btn btn-primary btn-sm">
-
-   Voir
-
-</a>
-
-</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-
-<td colspan="5">Aucune commande</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-</div>
 {% endblock %}
+

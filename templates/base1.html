@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}GonaLink - Marketplace Agricole{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+
+        body{
+            margin:0;
+            background:#f6f7fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar{
+            background:white;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .brand{
+            font-weight:800;
+            color:#198754;
+            font-size:20px;
+        }
+
+        .search-bar{
+            width:40%;
+        }
+
+        /* ================= HERO ================= */
+        .hero{
+            background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),
+                        url("https://images.unsplash.com/photo-1500595046743-cd271d694d30");
+            background-size:cover;
+            background-position:center;
+            height:300px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:white;
+            text-align:center;
+            border-radius:10px;
+            margin:20px;
+        }
+
+        .hero h1{
+            font-size:2.5rem;
+            font-weight:800;
+        }
+
+        /* ================= CATEGORIES ================= */
+        .categories{
+            display:flex;
+            gap:15px;
+            flex-wrap:wrap;
+            justify-content:center;
+            margin:20px;
+        }
+
+        .cat{
+            background:white;
+            padding:10px 20px;
+            border-radius:30px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .cat:hover{
+            background:#198754;
+            color:white;
+        }
+
+        /* ================= PRODUCTS ================= */
+        .products{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+            gap:20px;
+            padding:20px;
+        }
+
+        .card-product{
+            background:white;
+            border-radius:12px;
+            overflow:hidden;
+            box-shadow:0 2px 10px rgba(0,0,0,0.08);
+            transition:0.3s;
+        }
+
+        .card-product:hover{
+            transform:translateY(-5px);
+        }
+
+        .card-product img{
+            width:100%;
+            height:180px;
+            object-fit:cover;
+        }
+
+        .card-body{
+            padding:10px;
+        }
+
+        .price{
+            color:#e67e22;
+            font-weight:bold;
+        }
+
+        .btn-buy{
+            background:#198754;
+            color:white;
+            width:100%;
+            border:none;
+            padding:8px;
+            border-radius:8px;
+        }
+
+        .btn-buy:hover{
+            background:#145c37;
+        }
+
+        /* ================= FOOTER ================= */
+        .footer{
+            background:#198754;
+            color:white;
+            text-align:center;
+            padding:15px;
+            margin-top:30px;
+        }
+
+    </style>
+
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg px-3">
+
+    <a class="navbar-brand brand" href="{% url 'home' %}">
+        🌾 GonaLink
+    </a>
+
+    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="nav">
+
+        <form class="d-flex mx-auto search-bar" method="GET" action="{% url 'product_list' %}">
+            <input class="form-control me-2" type="search" name="q" placeholder="Rechercher un produit...">
+            <button class="btn btn-success">🔍</button>
+        </form>
+
+        <ul class="navbar-nav ms-auto">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Accueil</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'product_list' %}">Produits</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'cart' %}">
+                    🛒 Panier
+                </a>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">Profil</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="{% url 'logout' %}">Déconnexion</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Connexion</a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+    </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<div class="hero">
+    <div>
+        <h1>Marketplace Agricole 🌾</h1>
+        <p>Achetez directement auprès des producteurs locaux</p>
+        <a href="{% url 'product_list' %}" class="btn btn-success mt-2">
+            Découvrir les produits
+        </a>
+    </div>
+</div>
+
+<!-- ================= CATEGORIES ================= -->
+<div class="categories">
+    <div class="cat">🥭 Fruits</div>
+    <div class="cat">🥕 Légumes</div>
+    <div class="cat">🌽 Céréales</div>
+    <div class="cat">🐄 Bétail</div>
+    <div class="cat">🌱 Semences</div>
+</div>
+
+<!-- ================= CONTENT ================= -->
+<div>
+    {% block content %}
+
+    <!-- PRODUITS (exemple si page home) -->
+    <div class="products">
+
+        {% for product in products %}
+
+        <div class="card-product">
+
+            {% if product.image %}
+                <img src="{{ product.image.url }}">
+            {% endif %}
+
+            <div class="card-body">
+                <h6>{{ product.name }}</h6>
+                <p class="price">{{ product.price }} FCFA</p>
+
+                <a href="/cart/add/{{ product.id }}/">
+                    <button class="btn-buy">Ajouter au panier</button>
+                </a>
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endblock %}
+</div>
+
+<!-- ================= FOOTER ================= -->
+<div class="footer">
+    © 2026 GonaLink - Tous droits réservés 🌾
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

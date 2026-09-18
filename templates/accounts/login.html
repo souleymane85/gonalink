@@ -6,290 +6,1774 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>Connexion AgroMarket</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Connexion à AgroMarket, marketplace agricole du Niger."
+    >
+
+    <title>Connexion | AgroMarket</title>
 
 
-    <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
-    rel="stylesheet">
+    <!-- =========================================================
+         BOOTSTRAP
+    ========================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
 
-    <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" 
-    rel="stylesheet">
+    <!-- =========================================================
+         BOOTSTRAP ICONS
+    ========================================================== -->
 
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================================
+         POLICE
+    ========================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
 
     <style>
 
+        /* =====================================================
+           VARIABLES
+        ===================================================== */
+
+        :root {
+
+            --green-dark: #14532d;
+
+            --green: #198754;
+
+            --green-light: #22c55e;
+
+            --green-soft: #ecfdf3;
+
+            --orange: #f59e0b;
+
+            --orange-dark: #d97706;
+
+            --white: #ffffff;
+
+            --background: #f4f7f5;
+
+            --text-dark: #17221b;
+
+            --text-muted: #6b7280;
+
+            --border: #e5e7eb;
+
+            --danger: #dc3545;
+
+        }
+
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
 
         body {
 
-            min-height:100vh;
+            min-height: 100vh;
 
-            background: linear-gradient(
-                135deg,
-                #198754,
-                #0d6efd
-            );
+            font-family: "Inter", Arial, sans-serif;
 
-            display:flex;
+            color: var(--text-dark);
 
-            justify-content:center;
+            background: var(--background);
 
-            align-items:center;
-
-            font-family:Arial, sans-serif;
+            overflow-x: hidden;
 
         }
 
 
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .login-page {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        /* =====================================================
+           LEFT SIDE
+        ===================================================== */
+
+        .login-visual {
+
+            width: 52%;
+
+            min-height: 100vh;
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 60px;
+
+            background:
+
+                linear-gradient(
+                    135deg,
+                    rgba(20, 83, 45, 0.97),
+                    rgba(25, 135, 84, 0.94)
+                );
+
+            overflow: hidden;
+
+        }
+
+
+        .login-visual::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 550px;
+
+            height: 550px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.06);
+
+            top: -220px;
+
+            left: -220px;
+
+        }
+
+
+        .login-visual::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 450px;
+
+            height: 450px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.05);
+
+            right: -180px;
+
+            bottom: -180px;
+
+        }
+
+
+        .visual-content {
+
+            max-width: 560px;
+
+            position: relative;
+
+            z-index: 2;
+
+            color: white;
+
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .brand-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 45px;
+
+        }
+
+
+        .brand-logo-small {
+
+            width: 64px;
+
+            height: 64px;
+
+            border-radius: 16px;
+
+            object-fit: cover;
+
+            background: white;
+
+            padding: 5px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.18);
+
+        }
+
+
+        .brand-name {
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+
+            margin: 0;
+
+        }
+
+
+        .brand-subtitle {
+
+            font-size: 13px;
+
+            opacity: 0.8;
+
+            margin-top: 3px;
+
+        }
+
+
+        /* =====================================================
+           HERO TEXT
+        ===================================================== */
+
+        .visual-content h1 {
+
+            font-size: clamp(38px, 4vw, 62px);
+
+            line-height: 1.05;
+
+            font-weight: 800;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .visual-content h1 span {
+
+            color: #fbbf24;
+
+        }
+
+
+        .visual-description {
+
+            font-size: 17px;
+
+            line-height: 1.8;
+
+            opacity: 0.9;
+
+            max-width: 500px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        /* =====================================================
+           FEATURES
+        ===================================================== */
+
+        .features {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+
+            max-width: 480px;
+
+        }
+
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background: rgba(255,255,255,0.09);
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(5px);
+
+        }
+
+
+        .feature-icon {
+
+            width: 40px;
+
+            height: 40px;
+
+            min-width: 40px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,0.15);
+
+            font-size: 19px;
+
+        }
+
+
+        .feature-text {
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        /* =====================================================
+           RIGHT SIDE
+        ===================================================== */
+
+        .login-area {
+
+            width: 48%;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 40px;
+
+            background: #ffffff;
+
+        }
+
+
+        /* =====================================================
+           LOGIN CARD
+        ===================================================== */
 
         .login-card {
 
+            width: 100%;
 
-            width:100%;
-
-            max-width:450px;
-
-
-            background:white;
-
-
-            padding:40px;
-
-
-            border-radius:25px;
-
-
-            box-shadow:
-
-            0 20px 50px rgba(0,0,0,0.25);
-
+            max-width: 470px;
 
         }
 
 
+        /* =====================================================
+           MOBILE BRAND
+        ===================================================== */
 
+        .mobile-brand {
 
-        .logo {
+            display: none;
 
+            text-align: center;
 
-            width:180px;
-
-
-            height:180px;
-
-
-            object-fit:contain;
-
-
-            display:block;
-
-
-            margin:0 auto 20px auto;
-
+            margin-bottom: 30px;
 
         }
 
 
+        .mobile-brand img {
 
+            width: 90px;
 
+            height: 90px;
 
-        h3 {
+            object-fit: contain;
 
+            border-radius: 20px;
 
-            font-weight:700;
-
-
-            color:#198754;
-
+            margin-bottom: 15px;
 
         }
 
 
+        .mobile-brand h2 {
 
+            font-weight: 800;
+
+            color: var(--green-dark);
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .mobile-brand p {
+
+            color: var(--text-muted);
+
+            font-size: 14px;
+
+        }
+
+
+        /* =====================================================
+           LOGIN HEADER
+        ===================================================== */
+
+        .login-header {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .login-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding: 7px 12px;
+
+            border-radius: 50px;
+
+            background: var(--green-soft);
+
+            color: var(--green-dark);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .login-badge i {
+
+            color: var(--green);
+
+        }
+
+
+        .login-header h2 {
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            letter-spacing: -1px;
+
+            color: var(--text-dark);
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .login-header p {
+
+            color: var(--text-muted);
+
+            margin: 0;
+
+            font-size: 15px;
+
+        }
+
+
+        /* =====================================================
+           DJANGO MESSAGES
+        ===================================================== */
+
+        .alert {
+
+            border-radius: 13px;
+
+            border: none;
+
+            font-size: 14px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .alert-danger {
+
+            background: #fff1f2;
+
+            color: #991b1b;
+
+        }
+
+
+        .alert-success {
+
+            background: #ecfdf3;
+
+            color: #166534;
+
+        }
+
+
+        .alert-warning {
+
+            background: #fffbeb;
+
+            color: #92400e;
+
+        }
+
+
+        .alert-info {
+
+            background: #eff6ff;
+
+            color: #1e40af;
+
+        }
+
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+
+            margin-bottom: 21px;
+
+        }
+
+
+        .form-label {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #374151;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 16px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #9ca3af;
+
+            font-size: 18px;
+
+            z-index: 5;
+
+            pointer-events: none;
+
+        }
 
 
         .form-control {
 
+            height: 56px;
 
-            height:50px;
+            border-radius: 14px;
 
+            border: 1px solid var(--border);
 
-            border-radius:12px;
+            padding-left: 48px;
 
+            padding-right: 48px;
 
-            font-size:16px;
+            font-size: 15px;
 
+            color: var(--text-dark);
 
-        }
+            background: #ffffff;
 
-
-
-
-
-        .input-group-text {
-
-
-            background:#198754;
-
-
-            color:white;
-
-
-            border:none;
-
+            transition: all 0.2s ease;
 
         }
 
 
+        .form-control::placeholder {
 
+            color: #adb5bd;
+
+        }
+
+
+        .form-control:hover {
+
+            border-color: #cbd5d1;
+
+        }
 
 
         .form-control:focus {
 
+            border-color: var(--green);
 
-            border-color:#198754;
-
-
-            box-shadow:0 0 0 0.2rem rgba(25,135,84,.25);
-
+            box-shadow:
+                0 0 0 4px rgba(25,135,84,0.10);
 
         }
 
 
+        /* =====================================================
+           PASSWORD BUTTON
+        ===================================================== */
+
+        .password-toggle {
+
+            position: absolute;
+
+            right: 8px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 40px;
+
+            height: 40px;
+
+            border: none;
+
+            background: transparent;
+
+            color: #9ca3af;
+
+            border-radius: 10px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
 
 
+        .password-toggle:hover {
+
+            background: var(--green-soft);
+
+            color: var(--green);
+
+        }
+
+
+        /* =====================================================
+           REMEMBER / HELP
+        ===================================================== */
+
+        .login-options {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-top: -5px;
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .form-check {
+
+            margin: 0;
+
+        }
+
+
+        .form-check-input {
+
+            cursor: pointer;
+
+        }
+
+
+        .form-check-input:checked {
+
+            background-color: var(--green);
+
+            border-color: var(--green);
+
+        }
+
+
+        .form-check-label {
+
+            color: var(--text-muted);
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+        }
+
+
+        .help-link {
+
+            color: var(--green);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+        }
+
+
+        .help-link:hover {
+
+            color: var(--green-dark);
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
 
         .btn-login {
 
+            width: 100%;
 
-            height:55px;
+            height: 57px;
 
+            border: none;
 
-            border-radius:12px;
+            border-radius: 14px;
 
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--green),
+                    var(--green-light)
+                );
 
-            font-size:18px;
+            color: white;
 
+            font-size: 15px;
 
-            font-weight:bold;
+            font-weight: 700;
 
+            display: flex;
 
-            transition:0.3s;
+            align-items: center;
 
+            justify-content: center;
+
+            gap: 10px;
+
+            box-shadow:
+                0 10px 25px rgba(25,135,84,0.22);
+
+            transition: all 0.25s ease;
 
         }
-
-
-
 
 
         .btn-login:hover {
 
+            color: white;
 
-            transform:scale(1.03);
+            transform: translateY(-2px);
 
-
-        }
-
-
-
-
-        .footer {
-
-
-            font-size:14px;
-
+            box-shadow:
+                0 14px 30px rgba(25,135,84,0.28);
 
         }
 
 
+        .btn-login:active {
+
+            transform: translateY(0);
+
+        }
+
+
+        .btn-login i {
+
+            font-size: 19px;
+
+        }
+
+
+        /* =====================================================
+           DIVIDER
+        ===================================================== */
+
+        .divider {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin: 27px 0;
+
+            color: #9ca3af;
+
+            font-size: 12px;
+
+        }
+
+
+        .divider::before,
+        .divider::after {
+
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: var(--border);
+
+        }
+
+
+        /* =====================================================
+           REGISTER
+        ===================================================== */
+
+        .register-box {
+
+            padding: 18px;
+
+            border-radius: 14px;
+
+            background: #f8faf9;
+
+            border: 1px solid #edf1ee;
+
+            text-align: center;
+
+        }
+
+
+        .register-box p {
+
+            margin: 0 0 8px 0;
+
+            font-size: 13px;
+
+            color: var(--text-muted);
+
+        }
+
+
+        .register-link {
+
+            color: var(--green);
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+        }
+
+
+        .register-link:hover {
+
+            color: var(--green-dark);
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .login-footer {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            color: #9ca3af;
+
+            font-size: 12px;
+
+        }
+
+
+        .footer-links {
+
+            margin-top: 6px;
+
+        }
+
+
+        .footer-links a {
+
+            color: #9ca3af;
+
+            text-decoration: none;
+
+            margin: 0 7px;
+
+        }
+
+
+        .footer-links a:hover {
+
+            color: var(--green);
+
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .btn-login.loading {
+
+            pointer-events: none;
+
+            opacity: 0.8;
+
+        }
+
+
+        .spinner {
+
+            width: 18px;
+
+            height: 18px;
+
+            border: 2px solid rgba(255,255,255,0.35);
+
+            border-top-color: white;
+
+            border-radius: 50%;
+
+            animation: spin 0.7s linear infinite;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE TABLET
+        ===================================================== */
+
+        @media (max-width: 991px) {
+
+            .login-visual {
+
+                width: 45%;
+
+                padding: 35px;
+
+            }
+
+
+            .login-area {
+
+                width: 55%;
+
+                padding: 30px;
+
+            }
+
+
+            .visual-content h1 {
+
+                font-size: 42px;
+
+            }
+
+
+            .features {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE MOBILE
+        ===================================================== */
+
+        @media (max-width: 767px) {
+
+            .login-page {
+
+                display: block;
+
+                min-height: 100vh;
+
+                background:
+
+                    linear-gradient(
+                        135deg,
+                        #effaf3,
+                        #ffffff
+                    );
+
+            }
+
+
+            .login-visual {
+
+                display: none;
+
+            }
+
+
+            .login-area {
+
+                width: 100%;
+
+                min-height: 100vh;
+
+                padding: 30px 20px;
+
+                background: transparent;
+
+                align-items: flex-start;
+
+            }
+
+
+            .login-card {
+
+                max-width: 500px;
+
+                margin: 0 auto;
+
+                padding-top: 20px;
+
+            }
+
+
+            .mobile-brand {
+
+                display: block;
+
+            }
+
+
+            .login-header {
+
+                text-align: center;
+
+                margin-bottom: 28px;
+
+            }
+
+
+            .login-header h2 {
+
+                font-size: 28px;
+
+            }
+
+
+            .login-badge {
+
+                margin-bottom: 12px;
+
+            }
+
+
+            .login-options {
+
+                gap: 10px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           PETITS ÉCRANS
+        ===================================================== */
+
+        @media (max-width: 400px) {
+
+            .login-area {
+
+                padding: 20px 15px;
+
+            }
+
+
+            .form-control {
+
+                height: 53px;
+
+            }
+
+
+            .btn-login {
+
+                height: 54px;
+
+            }
+
+
+            .login-header h2 {
+
+                font-size: 25px;
+
+            }
+
+        }
 
     </style>
 
-
 </head>
-
 
 
 <body>
 
 
-
-<div class="login-card">
-
+<div class="login-page">
 
 
-    <!-- LOGO AGROMARKET -->
+    <!-- =====================================================
+         PARTIE GAUCHE
+    ====================================================== -->
 
-    <img 
+    <section class="login-visual">
 
-        src="{% static 'images/logo.jpeg' %}"
-
-        class="logo"
-
-        alt="AgroMarket">
+        <div class="visual-content">
 
 
+            <!-- MARQUE -->
+
+            <div class="brand-area">
+
+                <img
+                    src="{% static 'images/logo.jpeg' %}"
+                    class="brand-logo-small"
+                    alt="Logo AgroMarket"
+                >
+
+                <div>
+
+                    <div class="brand-name">
+                        AgroMarket
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Marketplace agricole du Niger
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TITRE -->
+
+            <h1>
+
+                Le marché agricole
+                <span>à portée de main.</span>
+
+            </h1>
+
+
+            <p class="visual-description">
+
+                Retrouvez vos produits agricoles, découvrez
+                les producteurs locaux et gérez vos achats
+                simplement depuis une seule plateforme.
+
+            </p>
+
+
+            <!-- AVANTAGES -->
+
+            <div class="features">
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-shop"></i>
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Produits agricoles locaux
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-basket2"></i>
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Commandes simplifiées
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-people"></i>
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Vendeurs et producteurs
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature">
+
+                    <div class="feature-icon">
+
+                        <i class="bi bi-shield-check"></i>
+
+                    </div>
+
+                    <div class="feature-text">
+
+                        Plateforme sécurisée
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
 
 
 
-    <h3 class="text-center mb-4">
+    <!-- =====================================================
+         PARTIE DROITE
+    ====================================================== -->
 
-        Connexion
-
-    </h3>
-
-
+    <section class="login-area">
 
 
-
-    <form method="POST">
-
-
-        {% csrf_token %}
+        <div class="login-card">
 
 
+            <!-- =================================================
+                 MARQUE MOBILE
+            ================================================== -->
+
+            <div class="mobile-brand">
+
+                <img
+                    src="{% static 'images/logo.jpeg' %}"
+                    alt="Logo AgroMarket"
+                >
+
+                <h2>
+                    AgroMarket
+                </h2>
+
+                <p>
+                    Marketplace agricole du Niger
+                </p>
+
+            </div>
 
 
-        <div class="mb-3">
+            <!-- =================================================
+                 EN-TÊTE
+            ================================================== -->
+
+            <div class="login-header">
 
 
-            <label class="form-label">
+                <div class="login-badge">
 
-                Nom utilisateur
+                    <i class="bi bi-shield-lock-fill"></i>
 
-            </label>
+                    Espace sécurisé
 
-
-
-            <div class="input-group">
+                </div>
 
 
-
-                <span class="input-group-text">
-
-                    <i class="bi bi-person"></i>
-
-                </span>
+                <h2>
+                    Bienvenue !
+                </h2>
 
 
+                <p>
+                    Connectez-vous à votre compte pour continuer.
+                </p>
 
 
-                <input 
+            </div>
 
-                    type="text"
 
-                    name="username"
+            <!-- =================================================
+                 MESSAGES DJANGO
+            ================================================== -->
 
-                    class="form-control"
+            {% if messages %}
 
-                    placeholder="Votre identifiant"
+                {% for message in messages %}
 
-                    required>
+                    <div
+                        class="alert alert-{{ message.tags }}"
+                        role="alert"
+                    >
 
+                        <i class="bi bi-info-circle me-2"></i>
+
+                        {{ message }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 ERREURS GÉNÉRALES DU FORMULAIRE
+            ================================================== -->
+
+            {% if form.errors %}
+
+                <div
+                    class="alert alert-danger"
+                    role="alert"
+                >
+
+                    <div class="d-flex align-items-start">
+
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                        <div>
+
+                            <strong>
+                                Connexion impossible
+                            </strong>
+
+                            <div class="mt-1">
+
+                                Votre identifiant ou votre mot de passe
+                                est incorrect.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <!-- =================================================
+                 FORMULAIRE
+            ================================================== -->
+
+            <form
+                method="POST"
+                id="loginForm"
+                novalidate
+            >
+
+                {% csrf_token %}
+
+
+                <!-- =============================================
+                     NOM UTILISATEUR
+                ============================================== -->
+
+                <div class="form-group">
+
+
+                    <label
+                        for="username"
+                        class="form-label"
+                    >
+
+                        Nom utilisateur
+
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <i class="bi bi-person input-icon"></i>
+
+
+                        <input
+
+                            type="text"
+
+                            id="username"
+
+                            name="username"
+
+                            class="form-control"
+
+                            placeholder="Entrez votre identifiant"
+
+                            autocomplete="username"
+
+                            required
+
+                            autofocus
+
+                        >
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     MOT DE PASSE
+                ============================================== -->
+
+                <div class="form-group">
+
+
+                    <label
+                        for="password"
+                        class="form-label"
+                    >
+
+                        Mot de passe
+
+                    </label>
+
+
+                    <div class="input-wrapper">
+
+
+                        <i class="bi bi-lock input-icon"></i>
+
+
+                        <input
+
+                            type="password"
+
+                            id="password"
+
+                            name="password"
+
+                            class="form-control"
+
+                            placeholder="Entrez votre mot de passe"
+
+                            autocomplete="current-password"
+
+                            required
+
+                        >
+
+
+                        <button
+
+                            type="button"
+
+                            class="password-toggle"
+
+                            id="togglePassword"
+
+                            aria-label="Afficher le mot de passe"
+
+                        >
+
+                            <i
+                                class="bi bi-eye"
+                                id="passwordIcon"
+                            ></i>
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     OPTIONS
+                ============================================== -->
+
+                <div class="login-options">
+
+
+                    <div class="form-check">
+
+
+                        <input
+
+                            class="form-check-input"
+
+                            type="checkbox"
+
+                            id="rememberMe"
+
+                        >
+
+
+                        <label
+                            class="form-check-label"
+                            for="rememberMe"
+                        >
+
+                            Se souvenir de moi
+
+                        </label>
+
+
+                    </div>
+
+
+                    <a
+                        href="#"
+                        class="help-link"
+                        onclick="return false;"
+                    >
+
+                        Besoin d'aide ?
+
+                    </a>
+
+
+                </div>
+
+
+
+                <!-- =============================================
+                     BOUTON
+                ============================================== -->
+
+                <button
+
+                    type="submit"
+
+                    class="btn btn-login"
+
+                    id="loginButton"
+
+                >
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    <span id="loginButtonText">
+                        Se connecter
+                    </span>
+
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================================
+                 SÉPARATEUR
+            ================================================== -->
+
+            <div class="divider">
+
+                OU
+
+            </div>
+
+
+
+            <!-- =================================================
+                 INSCRIPTION
+            ================================================== -->
+
+            <div class="register-box">
+
+
+                <p>
+
+                    Vous n'avez pas encore de compte ?
+
+                </p>
+
+
+                <a
+                    href="{% url 'register' %}"
+                    class="register-link"
+                >
+
+                    <i class="bi bi-person-plus me-1"></i>
+
+                    Créer un compte
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FOOTER
+            ================================================== -->
+
+            <div class="login-footer">
+
+
+                <div>
+
+                    © 2026 AgroMarket
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="{% url 'home' %}">
+                        Accueil
+                    </a>
+
+                    <span>•</span>
+
+                    <a href="{% url 'home' %}">
+                        Marketplace
+                    </a>
+
+                </div>
 
 
             </div>
@@ -298,111 +1782,147 @@
         </div>
 
 
-
-
-
-
-
-        <div class="mb-4">
-
-
-            <label class="form-label">
-
-                Mot de passe
-
-            </label>
-
-
-
-
-            <div class="input-group">
-
-
-
-                <span class="input-group-text">
-
-                    <i class="bi bi-lock"></i>
-
-                </span>
-
-
-
-
-
-                <input 
-
-
-                    type="password"
-
-                    name="password"
-
-                    class="form-control"
-
-                    placeholder="Votre mot de passe"
-
-                    required>
-
-
-
-
-            </div>
-
-
-        </div>
-
-
-
-
-
-
-
-        <button 
-
-
-            type="submit"
-
-            class="btn btn-success w-100 btn-login">
-
-
-
-            <i class="bi bi-box-arrow-in-right"></i>
-
-
-            Se connecter
-
-
-
-        </button>
-
-
-
-
-
-    </form>
-
-
-
-
-
-
-    <p class="text-center mt-4 text-muted footer">
-
-
-        AgroMarket © 2026
-
-
-    </p>
-
-
+    </section>
 
 
 </div>
 
 
 
+<!-- =========================================================
+     JAVASCRIPT
+========================================================== -->
+
+<script>
+
+    /* =========================================================
+       AFFICHER / MASQUER LE MOT DE PASSE
+    ========================================================== */
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const passwordIcon =
+        document.getElementById("passwordIcon");
+
+
+    if (togglePassword) {
+
+        togglePassword.addEventListener("click", function () {
+
+            const isPassword =
+                passwordInput.type === "password";
+
+
+            if (isPassword) {
+
+                passwordInput.type = "text";
+
+                passwordIcon.classList.remove("bi-eye");
+
+                passwordIcon.classList.add("bi-eye-slash");
+
+                togglePassword.setAttribute(
+                    "aria-label",
+                    "Masquer le mot de passe"
+                );
+
+            } else {
+
+                passwordInput.type = "password";
+
+                passwordIcon.classList.remove("bi-eye-slash");
+
+                passwordIcon.classList.add("bi-eye");
+
+                togglePassword.setAttribute(
+                    "aria-label",
+                    "Afficher le mot de passe"
+                );
+
+            }
+
+        });
+
+    }
+
+
+    /* =========================================================
+       ANIMATION DU BOUTON À LA SOUMISSION
+    ========================================================== */
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const loginButtonText =
+        document.getElementById("loginButtonText");
+
+
+    if (loginForm) {
+
+        loginForm.addEventListener("submit", function (event) {
+
+
+            const username =
+                document.getElementById("username").value.trim();
+
+
+            const password =
+                document.getElementById("password").value.trim();
+
+
+            if (!username || !password) {
+
+                return;
+
+            }
+
+
+            loginButton.classList.add("loading");
+
+
+            loginButton.innerHTML = `
+
+                <span class="spinner"></span>
+
+                <span>
+                    Connexion...
+                </span>
+
+            `;
+
+        });
+
+    }
+
+
+    /* =========================================================
+       EMPÊCHER LE LIEN "AIDE" DE REMONTER LA PAGE
+    ========================================================== */
+
+    const helpLink =
+        document.querySelector(".help-link");
+
+
+    if (helpLink) {
+
+        helpLink.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+        });
+
+    }
+
+</script>
 
 
 </body>
-
 
 </html>

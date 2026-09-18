@@ -1,278 +1,891 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>{% block title %}AgroMarket{% endblock %}</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <title>
+        {% block title %}GonaLink{% endblock %}
+    </title>
+
+    <!-- =====================================================
+         BOOTSTRAP
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- =====================================================
+         BOOTSTRAP ICONS
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+        rel="stylesheet">
+
 
     <style>
 
-        body{
-            background:#f4f6f9;
-            margin:0;
-            padding:0;
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        :root {
+
+            --green-dark: #174d2a;
+            --green: #198754;
+            --green-light: #eaf7ef;
+
+            --orange: #f28c28;
+            --orange-dark: #dc7417;
+
+            --sidebar-width: 255px;
+
+            --background: #f5f7f6;
+
+            --text-dark: #1f2937;
+            --text-muted: #6b7280;
+
+            --border: #e5e7eb;
+
+            --white: #ffffff;
+
         }
 
-        /* Décalage uniquement si connecté */
-        body.authenticated .navbar,
-        body.authenticated .content,
-        body.authenticated .footer{
-            margin-left:250px;
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
         }
 
-        /* =======================
-            SIDEBAR
-        ======================= */
+        html,
+        body {
 
-        .sidebar{
-            position:fixed;
-            top:0;
-            left:0;
-            width:250px;
-            height:100vh;
-            background:#198754;
-            color:white;
-            overflow-y:auto;
-            box-shadow:2px 0 8px rgba(0,0,0,.15);
+            margin: 0;
+            padding: 0;
+
+            min-height: 100%;
+
+            font-family:
+                "Inter",
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background: var(--background);
+
+            color: var(--text-dark);
+
         }
 
-        .logo-container{
-            padding:25px 10px;
-            text-align:center;
-            border-bottom:1px solid rgba(255,255,255,.2);
+
+        body {
+            overflow-x: hidden;
         }
 
-        .logo{
-            width:65px;
-            height:65px;
-            object-fit:cover;
-            border-radius:50%;
-            border:2px solid #fff;
+
+        a {
+            text-decoration: none;
         }
 
-        .logo-title{
-            font-size:16px;
-            font-weight:bold;
-            color:white;
-            margin:0;
+
+        /* =====================================================
+           SIDEBAR
+        ====================================================== */
+
+        .sidebar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: var(--sidebar-width);
+            height: 100vh;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #176b3a 0%,
+                    #198754 55%,
+                    #157347 100%
+                );
+
+            color: white;
+
+            z-index: 1100;
+
+            overflow-y: auto;
+
+            box-shadow:
+                5px 0 25px rgba(0,0,0,.08);
+
+            transition:
+                transform .3s ease;
+
         }
 
-        .sidebar a{
-            display:block;
-            color:white;
-            text-decoration:none;
-            padding:12px 20px;
-            transition:.3s;
-            font-size:15px;
+
+        /* scrollbar */
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px;
         }
 
-        .sidebar a:hover{
-            background:rgba(255,255,255,.15);
-            padding-left:28px;
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.25);
+            border-radius: 10px;
         }
 
-        .sidebar i{
-            margin-right:10px;
+
+        /* =====================================================
+           LOGO
+        ====================================================== */
+
+        .logo-container {
+
+            padding: 25px 18px 22px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.15);
+
+            margin-bottom: 12px;
+
         }
 
-        /* =======================
-            NAVBAR
-        ======================= */
 
-        .navbar{
-            background:white;
-            border-bottom:1px solid #ddd;
-            position:sticky;
-            top:0;
-            z-index:1000;
+        .logo-wrapper {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 12px;
+
         }
 
-        /* =======================
-            CONTENT
-        ======================= */
 
-        .content{
-            padding:25px;
-            min-height:calc(100vh - 120px);
+        .logo {
+
+            width: 58px;
+            height: 58px;
+
+            object-fit: cover;
+
+            border-radius: 16px;
+
+            border:
+                2px solid rgba(255,255,255,.9);
+
+            box-shadow:
+                0 5px 15px rgba(0,0,0,.18);
+
         }
 
-        /* =======================
-            FOOTER
-        ======================= */
 
-        .footer{
-            background:#198754;
-            color:white;
-            text-align:center;
-            padding:12px;
-            font-size:14px;
+        .logo-text {
+
+            display: flex;
+            flex-direction: column;
+
         }
 
-        /* =======================
-            MOBILE
-        ======================= */
 
-        @media(max-width:768px){
+        .logo-title {
 
-            .sidebar{
-                position:relative;
-                width:100%;
-                height:auto;
+            font-size: 1.25rem;
+
+            font-weight: 800;
+
+            color: white;
+
+            line-height: 1.1;
+
+        }
+
+
+        .logo-subtitle {
+
+            font-size: .72rem;
+
+            color: rgba(255,255,255,.72);
+
+            margin-top: 4px;
+
+        }
+
+
+        /* =====================================================
+           MENU
+        ====================================================== */
+
+        .sidebar-section {
+
+            padding:
+                12px 20px 6px;
+
+            color:
+                rgba(255,255,255,.55);
+
+            font-size: .68rem;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .sidebar-menu {
+
+            padding: 0 12px;
+
+        }
+
+
+        .sidebar a.menu-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
+
+            color: rgba(255,255,255,.88);
+
+            padding:
+                11px 14px;
+
+            margin-bottom: 4px;
+
+            border-radius: 10px;
+
+            font-size: .91rem;
+
+            font-weight: 500;
+
+            transition:
+                all .2s ease;
+
+        }
+
+
+        .sidebar a.menu-link i {
+
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 1.05rem;
+
+        }
+
+
+        .sidebar a.menu-link:hover {
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.13);
+
+            transform:
+                translateX(3px);
+
+        }
+
+
+        .sidebar a.menu-link.active {
+
+            color: white;
+
+            background:
+                rgba(255,255,255,.18);
+
+            box-shadow:
+                inset 3px 0 0 white;
+
+        }
+
+
+        /* =====================================================
+           BADGE
+        ====================================================== */
+
+        .menu-badge {
+
+            margin-left: auto;
+
+            background: var(--orange);
+
+            color: white;
+
+            font-size: .65rem;
+
+            font-weight: 800;
+
+            padding: 3px 7px;
+
+            border-radius: 20px;
+
+        }
+
+
+        /* =====================================================
+           USER BOX
+        ====================================================== */
+
+        .sidebar-user {
+
+            margin:
+                18px 12px;
+
+            padding: 12px;
+
+            border-radius: 13px;
+
+            background:
+                rgba(0,0,0,.12);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .user-avatar {
+
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            color: var(--green);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.05rem;
+
+            font-weight: 800;
+
+        }
+
+
+        .user-info {
+
+            min-width: 0;
+
+        }
+
+
+        .user-name {
+
+            color: white;
+
+            font-size: .82rem;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .user-status {
+
+            color:
+                rgba(255,255,255,.65);
+
+            font-size: .68rem;
+
+        }
+
+
+        /* =====================================================
+           SEPARATEUR
+        ====================================================== */
+
+        .sidebar-divider {
+
+            height: 1px;
+
+            background:
+                rgba(255,255,255,.12);
+
+            margin:
+                10px 18px;
+
+        }
+
+
+        /* =====================================================
+           MAIN AREA
+        ====================================================== */
+
+        body.authenticated .main-wrapper {
+
+            margin-left:
+                var(--sidebar-width);
+
+        }
+
+
+        .main-wrapper {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ====================================================== */
+
+        .top-navbar {
+
+            height: 70px;
+
+            background:
+                rgba(255,255,255,.96);
+
+            backdrop-filter:
+                blur(12px);
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                0 28px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            box-shadow:
+                0 2px 15px rgba(0,0,0,.03);
+
+        }
+
+
+        .navbar-brand-custom {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color:
+                var(--green-dark);
+
+            font-weight: 800;
+
+            font-size: 1.15rem;
+
+        }
+
+
+        .navbar-brand-custom img {
+
+            width: 39px;
+            height: 39px;
+
+            border-radius: 11px;
+
+            object-fit: cover;
+
+        }
+
+
+        .navbar-spacer {
+            flex: 1;
+        }
+
+
+        /* =====================================================
+           NAVBAR BUTTONS
+        ====================================================== */
+
+        .nav-action {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            padding:
+                8px 13px;
+
+            border-radius: 9px;
+
+            font-size: .83rem;
+
+            font-weight: 600;
+
+            transition: .2s;
+
+        }
+
+
+        .nav-cart {
+
+            color:
+                var(--green-dark);
+
+            background:
+                var(--green-light);
+
+        }
+
+
+        .nav-cart:hover {
+
+            background:
+                #dcefe3;
+
+            color:
+                var(--green-dark);
+
+        }
+
+
+        .nav-login {
+
+            color:
+                var(--green);
+
+            border:
+                1px solid #b9ddc7;
+
+        }
+
+
+        .nav-login:hover {
+
+            background:
+                var(--green-light);
+
+        }
+
+
+        .nav-register {
+
+            color: white;
+
+            background:
+                var(--green);
+
+            box-shadow:
+                0 4px 12px rgba(25,135,84,.18);
+
+        }
+
+
+        .nav-register:hover {
+
+            color: white;
+
+            background:
+                #157347;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .nav-logout {
+
+            color:
+                #dc3545;
+
+            border:
+                1px solid #f1c2c7;
+
+        }
+
+
+        .nav-logout:hover {
+
+            background:
+                #fff1f2;
+
+        }
+
+
+        /* =====================================================
+           MOBILE TOGGLE
+        ====================================================== */
+
+        .mobile-menu-btn {
+
+            border: none;
+
+            background:
+                var(--green-light);
+
+            color:
+                var(--green-dark);
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 10px;
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 1.2rem;
+
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ====================================================== */
+
+        .content {
+
+            flex: 1;
+
+            padding:
+                28px;
+
+            width: 100%;
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .footer {
+
+            margin-top: auto;
+
+            background:
+                white;
+
+            border-top:
+                1px solid var(--border);
+
+            color:
+                var(--text-muted);
+
+            text-align: center;
+
+            padding:
+                16px 20px;
+
+            font-size: .78rem;
+
+        }
+
+
+        .footer strong {
+
+            color:
+                var(--green);
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 992px) {
+
+            :root {
+                --sidebar-width: 240px;
             }
 
-            .navbar,
-            .content,
-            .footer{
-                margin-left:0 !important;
+            .sidebar {
+
+                transform:
+                    translateX(-100%);
+
+            }
+
+            .sidebar.mobile-open {
+
+                transform:
+                    translateX(0);
+
+            }
+
+            body.authenticated .main-wrapper {
+
+                margin-left: 0;
+
+            }
+
+            .mobile-menu-btn {
+
+                display: inline-flex;
+
+                margin-right: 12px;
+
+            }
+
+            .content {
+
+                padding:
+                    20px 15px;
+
+            }
+
+            .top-navbar {
+
+                padding:
+                    0 15px;
+
             }
 
         }
+
+
+        @media (max-width: 576px) {
+
+            .navbar-brand-custom span {
+
+                display: none;
+
+            }
+
+            .nav-action span {
+
+                display: none;
+
+            }
+
+            .nav-action {
+
+                width: 40px;
+                height: 40px;
+
+                justify-content: center;
+
+                padding: 0;
+
+            }
+
+            .top-navbar {
+
+                height: 62px;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           OVERLAY MOBILE
+        ====================================================== */
+
+        .sidebar-overlay {
+
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,.35);
+
+            z-index: 1050;
+
+        }
+
+
+        .sidebar-overlay.show {
+
+            display: block;
+
+        }
+
 
     </style>
 
+
     {% block css %}{% endblock %}
+
 </head>
+
 
 <body class="{% if user.is_authenticated %}authenticated{% endif %}">
 
+
 {% if user.is_authenticated %}
 
-<!-- ================= SIDEBAR ================= -->
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
-<div class="sidebar">
+<aside class="sidebar" id="sidebar">
+
+
+    <!-- LOGO -->
 
     <div class="logo-container">
 
-        <div class="d-flex align-items-center justify-content-center gap-2">
+        <div class="logo-wrapper">
 
-            <img src="{% static 'images/logo.jpeg' %}"
-                 class="logo"
-                 alt="Logo">
+            <img
+                src="{% static 'images/logo.jpeg' %}"
+                class="logo"
+                alt="Logo GonaLink">
 
-            <span class="logo-title">GonaLink</span>
+            <div class="logo-text">
 
-        </div>
+                <div class="logo-title">
+                    GonaLink
+                </div>
 
-    </div>
-
-    <a href="{% url 'home' %}">
-        <i class="bi bi-house"></i> Accueil
-    </a>
-
-    <a href="{% url 'product_list' %}">
-        <i class="bi bi-grid"></i> Produits
-    </a>
-    <a href="{% url 'product_create' %}">
-    <i class="bi bi-grid"></i> Ajouter un produit
-</a>
-
-<a href="{% url 'dashboard' %}">
-    <i class="bi bi-grid"></i> Tableau de bord
-</a>
-
-    <a href="{% url 'cart' %}">
-        <i class="bi bi-cart3"></i> Panier
-    </a>
-
-    <a href="{% url 'profile' %}">
-        <i class="bi bi-person-circle"></i> Profil
-    </a>
-
-    <a href="{% url 'logout' %}">
-        <i class="bi bi-box-arrow-right"></i> Déconnexion
-    </a>
-
-</div>
-
-{% endif %}
-
-<!-- ================= NAVBAR ================= -->
-
-<nav class="navbar navbar-expand-lg navbar-light shadow-sm px-3">
-
-    <div class="container-fluid">
-<a class="navbar-brand d-flex align-items-center fw-bold text-success"
-   href="{% url 'home' %}">
-
-    <img src="{% static 'images/logo.jpeg' %}"
-         alt="Logo GonaLink"
-         class="rounded-circle me-2"
-         width="50"
-         height="50">
-
-    <span class="fs-4">GonaLink</span>
-
-</a>
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarContent">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarContent">
-
-            <ul class="navbar-nav me-auto">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">
-                        Accueil
-                    </a>
-                </li>
-
-                {% if user.is_authenticated %}
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'product_list' %}">
-                        Produits
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cart' %}">
-                        Panier
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile' %}">
-                        Profil
-                    </a>
-                </li>
-
-                {% endif %}
-
-            </ul>
-
-            <div class="d-flex gap-2">
-
-                {% if user.is_authenticated %}
-
-                    <a href="{% url 'cart' %}" class="btn btn-success btn-sm">
-                        🛒 Panier
-                    </a>
-
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
-                        Déconnexion
-                    </a>
-
-                {% else %}
-
-                    <a href="{% url 'register' %}" class="btn btn-success btn-sm">
-                        Devenir vendeur
-                    </a>
-
-                    <a href="{% url 'login' %}" class="btn btn-outline-success btn-sm">
-                        Connexion
-                    </a>
-
-                {% endif %}
+                <div class="logo-subtitle">
+                    Marketplace agricole
+                </div>
 
             </div>
 
@@ -280,24 +893,417 @@
 
     </div>
 
-</nav>
 
-<!-- ================= CONTENT ================= -->
+    <!-- UTILISATEUR -->
 
-<div class="content">
+    <div class="sidebar-user">
 
-    {% block content %}
-    {% endblock %}
+        <div class="user-avatar">
+
+            <i class="bi bi-person"></i>
+
+        </div>
+
+        <div class="user-info">
+
+            <div class="user-name">
+                {{ user.username }}
+            </div>
+
+            <div class="user-status">
+                <i class="bi bi-circle-fill"
+                   style="font-size:6px;"></i>
+                Connecté
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU PRINCIPAL -->
+
+    <div class="sidebar-section">
+        Navigation
+    </div>
+
+
+    <div class="sidebar-menu">
+
+
+        <a
+            href="{% url 'home' %}"
+            class="menu-link">
+
+            <i class="bi bi-house-door"></i>
+
+            <span>Accueil</span>
+
+        </a>
+
+
+        <a
+            href="{% url 'product_list' %}"
+            class="menu-link">
+
+            <i class="bi bi-grid-1x2"></i>
+
+            <span>Produits</span>
+
+        </a>
+
+
+        <a
+            href="{% url 'product_create' %}"
+            class="menu-link">
+
+            <i class="bi bi-plus-square"></i>
+
+            <span>Ajouter un produit</span>
+
+        </a>
+
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="menu-link">
+
+            <i class="bi bi-speedometer2"></i>
+
+            <span>Tableau de bord</span>
+
+        </a>
+
+
+        <a
+            href="{% url 'cart' %}"
+            class="menu-link">
+
+            <i class="bi bi-cart3"></i>
+
+            <span>Panier</span>
+
+        </a>
+
+
+    </div>
+
+
+    <div class="sidebar-divider"></div>
+
+
+    <!-- COMPTE -->
+
+    <div class="sidebar-section">
+        Mon compte
+    </div>
+
+
+    <div class="sidebar-menu">
+
+
+        <a
+            href="{% url 'profile' %}"
+            class="menu-link">
+
+            <i class="bi bi-person-circle"></i>
+
+            <span>Mon profil</span>
+
+        </a>
+
+
+        <a
+            href="{% url 'logout' %}"
+            class="menu-link">
+
+            <i class="bi bi-box-arrow-right"></i>
+
+            <span>Déconnexion</span>
+
+        </a>
+
+
+    </div>
+
+
+</aside>
+
+
+<!-- OVERLAY MOBILE -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay">
+</div>
+
+{% endif %}
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+====================================================== -->
+
+<div class="main-wrapper">
+
+
+    <!-- =================================================
+         NAVBAR
+    ================================================== -->
+
+    <nav class="top-navbar">
+
+
+        {% if user.is_authenticated %}
+
+        <!-- MOBILE BUTTON -->
+
+        <button
+            class="mobile-menu-btn"
+            id="mobileMenuBtn"
+            type="button"
+            aria-label="Menu">
+
+            <i class="bi bi-list"></i>
+
+        </button>
+
+        {% endif %}
+
+
+        <!-- BRAND -->
+
+        <a
+            class="navbar-brand-custom"
+            href="{% url 'home' %}">
+
+            <img
+                src="{% static 'images/logo.jpeg' %}"
+                alt="Logo GonaLink">
+
+            <span>
+                GonaLink
+            </span>
+
+        </a>
+
+
+        <div class="navbar-spacer"></div>
+
+
+        <!-- ACTIONS -->
+
+        {% if user.is_authenticated %}
+
+
+            <a
+                href="{% url 'cart' %}"
+                class="nav-action nav-cart me-2">
+
+                <i class="bi bi-cart3"></i>
+
+                <span>
+                    Panier
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'logout' %}"
+                class="nav-action nav-logout">
+
+                <i class="bi bi-box-arrow-right"></i>
+
+                <span>
+                    Déconnexion
+                </span>
+
+            </a>
+
+
+        {% else %}
+
+
+            <a
+                href="{% url 'register' %}"
+                class="nav-action nav-register me-2">
+
+                <i class="bi bi-shop"></i>
+
+                <span>
+                    Devenir vendeur
+                </span>
+
+            </a>
+
+
+            <a
+                href="{% url 'login' %}"
+                class="nav-action nav-login">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+
+                <span>
+                    Connexion
+                </span>
+
+            </a>
+
+
+        {% endif %}
+
+
+    </nav>
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+
+    <main class="content">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+        © 2026
+        <strong>GonaLink</strong>
+
+        — Marketplace agricole du Niger 🌾
+
+        <br>
+
+        <span>
+            Tous droits réservés
+        </span>
+
+    </footer>
+
 
 </div>
 
-<!-- ================= FOOTER ================= -->
 
-<div class="footer">
-    © 2026 GonaLink — Tous droits réservés 🌾
-</div>
+<!-- =====================================================
+     BOOTSTRAP JS
+====================================================== -->
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+<!-- =====================================================
+     SIDEBAR MOBILE
+====================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuBtn =
+            document.getElementById("mobileMenuBtn");
+
+        const sidebar =
+            document.getElementById("sidebar");
+
+        const overlay =
+            document.getElementById("sidebarOverlay");
+
+
+        if (!menuBtn || !sidebar) {
+            return;
+        }
+
+
+        function openSidebar() {
+
+            sidebar.classList.add("mobile-open");
+
+            if (overlay) {
+                overlay.classList.add("show");
+            }
+
+        }
+
+
+        function closeSidebar() {
+
+            sidebar.classList.remove("mobile-open");
+
+            if (overlay) {
+                overlay.classList.remove("show");
+            }
+
+        }
+
+
+        menuBtn.addEventListener(
+            "click",
+            function () {
+
+                if (
+                    sidebar.classList.contains(
+                        "mobile-open"
+                    )
+                ) {
+
+                    closeSidebar();
+
+                } else {
+
+                    openSidebar();
+
+                }
+
+            }
+        );
+
+
+        if (overlay) {
+
+            overlay.addEventListener(
+                "click",
+                closeSidebar
+            );
+
+        }
+
+
+        /* Fermer après clic sur un lien */
+
+        sidebar
+            .querySelectorAll("a")
+            .forEach(function (link) {
+
+                link.addEventListener(
+                    "click",
+                    closeSidebar
+                );
+
+            });
+
+    }
+
+);
+
+</script>
+
+
+{% block js %}
+{% endblock %}
 
 </body>
+
 </html>
+

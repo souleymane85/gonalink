@@ -1,229 +1,2090 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    GonaLink — Marketplace Agricole
+{% endblock %}
+
 {% block content %}
 
 <style>
+/* =========================================================
+   GONALINK MARKETPLACE
+   HOME — FILTRES + CAROUSEL + PANIER
+   ========================================================= */
 
-/* ===== MARKETPLACE STYLE ===== */
-
-.marketplace-container {
-    max-width: 1400px;
-    margin: auto;
-    padding: 2rem;
+:root {
+    --gl-green-dark: #14532d;
+    --gl-green: #198754;
+    --gl-green-light: #22c55e;
+    --gl-green-soft: #ecfdf3;
+    --gl-orange: #f59e0b;
+    --gl-orange-dark: #d97706;
+    --gl-red: #dc2626;
+    --gl-blue: #2563eb;
+    --gl-dark: #17211b;
+    --gl-text: #334155;
+    --gl-muted: #64748b;
+    --gl-border: #e2e8f0;
+    --gl-bg: #f5f8f6;
+    --gl-white: #ffffff;
+    --gl-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+    --gl-shadow-hover: 0 18px 40px rgba(15, 23, 42, .14);
+    --gl-radius: 18px;
 }
 
-.marketplace-header h1 {
-    color: #2d5016;
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 2rem;
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.gonalink-page {
+    width: 100%;
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(34, 197, 94, .07),
+            transparent 30%
+        ),
+        var(--gl-bg);
+    padding: 28px 0 60px;
 }
 
-/* ===== CARROUSEL WRAPPER ===== */
-.products-wrapper {
+.gonalink-container {
+    width: min(1500px, calc(100% - 40px));
+    margin: 0 auto;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.gonalink-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: 48px 55px;
+    margin-bottom: 28px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20, 83, 45, .97),
+            rgba(25, 135, 84, .92)
+        );
+
+    box-shadow: var(--gl-shadow);
+    color: white;
+}
+
+.gonalink-hero::before {
+    content: "";
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    right: -100px;
+    top: -140px;
+}
+
+.gonalink-hero::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(245,158,11,.10);
+    right: 130px;
+    bottom: -150px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 14px;
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.20);
+
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+.hero-title {
+    margin: 0 0 15px;
+    font-size: clamp(30px, 4vw, 52px);
+    line-height: 1.08;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+}
+
+.hero-title span {
+    color: #fde68a;
+}
+
+.hero-text {
+    max-width: 700px;
+    margin: 0;
+    color: rgba(255,255,255,.86);
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-section {
+    background: var(--gl-white);
+    border: 1px solid var(--gl-border);
+    border-radius: var(--gl-radius);
+    padding: 18px;
+    margin-bottom: 24px;
+    box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.search-input-wrapper {
+    flex: 1;
     position: relative;
 }
 
-/* ===== CARROUSEL ===== */
-.products-grid {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
+.search-icon {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 19px;
+    pointer-events: none;
 }
 
-/* cacher scrollbar */
-.products-grid::-webkit-scrollbar {
-    display: none;
+.search-input {
+    width: 100%;
+    height: 52px;
+
+    padding: 0 18px 0 48px;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 13px;
+
+    outline: none;
+    background: #f8fafc;
+
+    color: var(--gl-dark);
+    font-size: 15px;
+
+    transition: .2s ease;
 }
 
-.product-card {
-    flex: 0 0 280px;
-    scroll-snap-align: start;
+.search-input:focus {
     background: white;
-    border-radius: 10px;
+    border-color: var(--gl-green);
+    box-shadow: 0 0 0 4px rgba(25,135,84,.10);
+}
+
+.search-button {
+    min-width: 145px;
+    height: 52px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: var(--gl-green);
+    color: white;
+
+    font-weight: 800;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.search-button:hover {
+    background: var(--gl-green-dark);
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.marketplace-layout {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 25px;
+    align-items: start;
+}
+
+/* =========================================================
+   SIDEBAR FILTRES
+   ========================================================= */
+
+.filters-sidebar {
+    position: sticky;
+    top: 20px;
+
+    background: white;
+    border: 1px solid var(--gl-border);
+    border-radius: 20px;
+
+    box-shadow: var(--gl-shadow);
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    transition: 0.3s;
+}
+
+.filters-header {
+    padding: 19px 20px;
+
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    border-bottom: 1px solid var(--gl-border);
 }
 
-.product-card:hover {
-    transform: translateY(-6px);
+.filters-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin: 0;
+
+    color: var(--gl-dark);
+    font-size: 17px;
+    font-weight: 900;
 }
 
-.product-image {
-    height: 200px;
-    background: #f5f5f5;
+.filters-title-icon {
+    width: 34px;
+    height: 34px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    border-radius: 10px;
+    background: var(--gl-green-soft);
+}
+
+.reset-filters {
+    color: var(--gl-green);
+    font-size: 12px;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.reset-filters:hover {
+    text-decoration: underline;
+}
+
+.filter-body {
+    padding: 20px;
+}
+
+.filter-group {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eef2f0;
+}
+
+.filter-group:last-child {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.filter-label {
+    display: block;
+    margin-bottom: 11px;
+
+    color: var(--gl-dark);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.filter-select,
+.filter-input {
+    width: 100%;
+    height: 44px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 11px;
+
+    background: #f8fafc;
+    color: var(--gl-text);
+
+    outline: none;
+    font-size: 13px;
+
+    transition: .2s ease;
+}
+
+.filter-select:focus,
+.filter-input:focus {
+    border-color: var(--gl-green);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(25,135,84,.09);
+}
+
+.price-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.price-input {
+    min-width: 0;
+}
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 8px 0;
+
+    cursor: pointer;
+    color: var(--gl-text);
+    font-size: 13px;
+}
+
+.checkbox-option input {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--gl-green);
+    cursor: pointer;
+}
+
+.checkbox-option:hover {
+    color: var(--gl-green-dark);
+}
+
+/* =========================================================
+   CATEGORY BUTTONS
+   ========================================================= */
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.category-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 11px;
+
+    border-radius: 10px;
+
+    color: var(--gl-text);
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.category-option:hover {
+    background: var(--gl-green-soft);
+    color: var(--gl-green-dark);
+}
+
+.category-option.active {
+    background: var(--gl-green);
+    color: white;
+}
+
+.category-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: rgba(255,255,255,.14);
+}
+
+.category-option:not(.active) .category-icon {
+    background: #f1f5f9;
+}
+
+/* =========================================================
+   APPLY BUTTON
+   ========================================================= */
+
+.apply-filters {
+    width: 100%;
+    height: 45px;
+
+    border: none;
+    border-radius: 11px;
+
+    background: var(--gl-green);
+    color: white;
+
+    font-size: 13px;
+    font-weight: 800;
+
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.apply-filters:hover {
+    background: var(--gl-green-dark);
+}
+
+/* =========================================================
+   MOBILE FILTER BUTTON
+   ========================================================= */
+
+.mobile-filter-button {
+    display: none;
+
+    width: 100%;
+    height: 48px;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 12px;
+
+    background: white;
+    color: var(--gl-dark);
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   PRODUCTS AREA
+   ========================================================= */
+
+.products-area {
+    min-width: 0;
+}
+
+.products-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-bottom: 17px;
+}
+
+.products-heading {
+    margin: 0;
+    color: var(--gl-dark);
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.products-count {
+    color: var(--gl-muted);
+    font-size: 13px;
+}
+
+.products-count strong {
+    color: var(--gl-green-dark);
+}
+
+/* =========================================================
+   CATEGORY QUICK FILTERS
+   ========================================================= */
+
+.quick-categories {
+    display: flex;
+    gap: 9px;
+
+    overflow-x: auto;
+    padding: 2px 2px 12px;
+
+    scrollbar-width: thin;
+    margin-bottom: 8px;
+}
+
+.quick-category {
+    flex: 0 0 auto;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 9px 13px;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 999px;
+
+    background: white;
+    color: var(--gl-text);
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: .2s ease;
+}
+
+.quick-category:hover,
+.quick-category.active {
+    border-color: var(--gl-green);
+    background: var(--gl-green);
+    color: white;
+}
+
+/* =========================================================
+   CAROUSEL
+   ========================================================= */
+
+.carousel-wrapper {
+    position: relative;
+}
+
+.products-carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns:
+        calc((100% - 48px) / 4);
+
+    gap: 16px;
+
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+
+    padding: 5px 3px 18px;
+
+    scrollbar-width: thin;
+    scrollbar-color: #b7c9bd transparent;
+}
+
+.products-carousel::-webkit-scrollbar {
+    height: 7px;
+}
+
+.products-carousel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.products-carousel::-webkit-scrollbar-thumb {
+    background: #b7c9bd;
+    border-radius: 20px;
+}
+
+/* =========================================================
+   PRODUCT CARD
+   ========================================================= */
+
+.product-card {
+    min-width: 0;
+
+    scroll-snap-align: start;
+
+    background: white;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow: 0 5px 18px rgba(15,23,42,.055);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    border-color: #c9ded1;
+    box-shadow: var(--gl-shadow-hover);
+}
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.product-image {
+    position: relative;
+    height: 205px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #edf7f0,
+            #dff1e5
+        );
+
+    overflow: hidden;
 }
 
 .product-image img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
+
+    transition: transform .45s ease;
 }
 
-.product-info {
-    padding: 1rem;
+.product-card:hover .product-image img {
+    transform: scale(1.06);
+}
+
+.product-placeholder {
+    width: 100%;
+    height: 100%;
+
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 55px;
+}
+
+.product-badge {
+    position: absolute;
+    top: 11px;
+    left: 11px;
+    z-index: 2;
+
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.94);
+    color: var(--gl-green-dark);
+
+    font-size: 10px;
+    font-weight: 800;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+
+.stock-badge {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+    z-index: 2;
+
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.stock-ok {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.stock-empty {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* =========================================================
+   PRODUCT INFO
+   ========================================================= */
+
+.product-info {
+    padding: 16px;
+}
+
+.product-category {
+    margin-bottom: 5px;
+
+    color: var(--gl-green);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .6px;
 }
 
 .product-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #2d5016;
+    min-height: 43px;
+
+    color: var(--gl-dark);
+
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 900;
+}
+
+.product-origin {
+    margin-top: 7px;
+
+    color: var(--gl-muted);
+
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .product-price {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #e86b35;
+    margin-top: 12px;
+
+    color: var(--gl-green-dark);
+
+    font-size: 19px;
+    font-weight: 900;
 }
 
-.btn-add {
-    margin-top: auto;
-    padding: 0.7rem;
-    background: #2d5016;
-    color: white;
-    text-align: center;
-    border-radius: 6px;
-    text-decoration: none;
+.product-unit {
+    color: var(--gl-muted);
+    font-size: 11px;
     font-weight: 600;
 }
 
-.btn-add:hover {
-    background: #1f3d0f;
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.product-actions {
+    display: flex;
+    gap: 7px;
+
+    margin-top: 14px;
 }
 
-/* ===== BOUTONS CARROUSEL ===== */
-.carousel-btn {
-    position: absolute;
-    top: 40%;
-    transform: translateY(-50%);
-    background: rgba(45, 80, 22, 0.9);
+.btn-detail {
+    width: 42px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+
+    background: white;
+    color: var(--gl-text);
+
+    text-decoration: none;
+
+    font-size: 16px;
+
+    transition: .2s ease;
+}
+
+.btn-detail:hover {
+    border-color: var(--gl-green);
+    color: var(--gl-green);
+    background: var(--gl-green-soft);
+}
+
+.btn-add {
+    flex: 1;
+
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: var(--gl-green);
     color: white;
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
+
+    text-decoration: none;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    transition: .2s ease;
+}
+
+.btn-add:hover {
+    background: var(--gl-green-dark);
+}
+
+.btn-disabled {
+    flex: 1;
+
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #f1f5f9;
+    color: #94a3b8;
+
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* =========================================================
+   CAROUSEL BUTTONS
+   ========================================================= */
+
+.carousel-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+
+    margin-bottom: 8px;
+}
+
+.carousel-btn {
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid var(--gl-border);
+    border-radius: 10px;
+
+    background: white;
+    color: var(--gl-dark);
+
     cursor: pointer;
-    z-index: 10;
-    font-size: 20px;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    transition: .2s ease;
 }
 
 .carousel-btn:hover {
-    background: #1f3d0f;
+    background: var(--gl-green);
+    border-color: var(--gl-green);
+    color: white;
 }
 
-.carousel-btn.left {
-    left: -10px;
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-products {
+    grid-column: 1 / -1;
+
+    min-height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: white;
+
+    border: 1px dashed #cbd5e1;
+    border-radius: 18px;
+
+    padding: 35px;
 }
 
-.carousel-btn.right {
-    right: -10px;
+.empty-products-icon {
+    font-size: 55px;
+    margin-bottom: 12px;
 }
 
+.empty-products strong {
+    color: var(--gl-dark);
+    font-size: 18px;
+}
+
+.empty-products span {
+    max-width: 450px;
+    margin-top: 8px;
+
+    color: var(--gl-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   MOBILE OVERLAY
+   ========================================================= */
+
+.filter-overlay {
+    display: none;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1200px) {
+
+    .products-carousel {
+        grid-auto-columns:
+            calc((100% - 32px) / 3);
+    }
+}
+
+@media (max-width: 950px) {
+
+    .marketplace-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .mobile-filter-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+    }
+
+    .filters-sidebar {
+        position: fixed;
+
+        top: 0;
+        left: -330px;
+
+        width: 310px;
+        max-width: 88vw;
+        height: 100vh;
+
+        z-index: 9999;
+
+        border-radius: 0 18px 18px 0;
+
+        transition: left .3s ease;
+
+        overflow-y: auto;
+    }
+
+    .filters-sidebar.mobile-open {
+        left: 0;
+    }
+
+    .filter-overlay {
+        position: fixed;
+        inset: 0;
+
+        z-index: 9998;
+
+        background: rgba(15,23,42,.48);
+        backdrop-filter: blur(2px);
+    }
+
+    .filter-overlay.active {
+        display: block;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .gonalink-container {
+        width: min(100% - 22px, 1500px);
+    }
+
+    .gonalink-page {
+        padding-top: 12px;
+    }
+
+    .gonalink-hero {
+        padding: 34px 24px;
+        border-radius: 20px;
+    }
+
+    .hero-title {
+        font-size: 31px;
+    }
+
+    .hero-text {
+        font-size: 14px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+
+    .products-carousel {
+        grid-auto-columns:
+            calc((100% - 12px) / 2);
+    }
+
+    .product-image {
+        height: 180px;
+    }
+
+    .products-heading {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .gonalink-container {
+        width: calc(100% - 16px);
+    }
+
+    .gonalink-hero {
+        padding: 28px 20px;
+        border-radius: 18px;
+    }
+
+    .hero-title {
+        font-size: 27px;
+    }
+
+    .hero-text {
+        font-size: 13px;
+    }
+
+    .search-section {
+        padding: 12px;
+    }
+
+    .products-carousel {
+        grid-auto-columns: 82%;
+    }
+
+    .product-image {
+        height: 205px;
+    }
+
+    .product-info {
+        padding: 14px;
+    }
+
+    .products-topbar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .carousel-controls {
+        display: none;
+    }
+}
 </style>
 
-<div class="marketplace-container">
 
-   <!--
-    <div class="marketplace-header">
-        <h1>Marketplace Agricole 🌾</h1>
-    </div> -->
+<div class="gonalink-page">
 
-    <!-- ===== CARROUSEL ===== -->
-    <div class="products-wrapper">
+    <div class="gonalink-container">
 
-        <button class="carousel-btn left" id="prevBtn">‹</button>
-        <button class="carousel-btn right" id="nextBtn">›</button>
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
 
-        <div class="products-grid" id="carousel">
+        <section class="gonalink-hero">
 
-            {% for product in products %}
+            <div class="hero-content">
 
-            <div class="product-card">
-
-                <div class="product-image">
-                    {% if product.image %}
-                        <img src="{{ product.image.url }}">
-                    {% endif %}
+                <div class="hero-badge">
+                    🌱 Marketplace agricole
                 </div>
 
-                <div class="product-info">
+                <h1 class="hero-title">
+                    Les produits agricoles
+                    <span>directement chez vous</span>
+                </h1>
 
-                    <div class="product-name">
-                        {{ product.name }}
-                    </div>
+                <p class="hero-text">
+                    Découvrez les produits agricoles disponibles sur GonaLink,
+                    comparez les offres et ajoutez facilement vos produits
+                    préférés au panier.
+                </p>
 
-                    <div class="product-price">
-                        {{ product.price }} FCFA / {{ product.unit }}
-                    </div>
+            </div>
 
-                    <a href="/cart/add/{{ product.id }}/" class="btn-add">
-                        Ajouter au panier
+        </section>
+
+
+        <!-- =====================================================
+             RECHERCHE
+        ====================================================== -->
+
+        <section class="search-section">
+
+            <form
+                method="get"
+                action="{% url 'home' %}"
+                class="search-form"
+            >
+
+                {% if selected_category %}
+                    <input
+                        type="hidden"
+                        name="category"
+                        value="{{ selected_category }}"
+                    >
+                {% endif %}
+
+                {% if selected_unit %}
+                    <input
+                        type="hidden"
+                        name="unit"
+                        value="{{ selected_unit }}"
+                    >
+                {% endif %}
+
+                {% if selected_origin %}
+                    <input
+                        type="hidden"
+                        name="origin"
+                        value="{{ selected_origin }}"
+                    >
+                {% endif %}
+
+                <div class="search-input-wrapper">
+
+                    <span class="search-icon">
+                        🔎
+                    </span>
+
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query|default:'' }}"
+                        class="search-input"
+                        placeholder="Rechercher un produit, une catégorie ou une provenance..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="search-button"
+                >
+                    🔎 Rechercher
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =====================================================
+             MOBILE FILTER BUTTON
+        ====================================================== -->
+
+        <button
+            type="button"
+            class="mobile-filter-button"
+            id="openFilters"
+        >
+            ⚙️ Afficher les filtres
+        </button>
+
+
+        <div
+            class="filter-overlay"
+            id="filterOverlay"
+        ></div>
+
+
+        <!-- =====================================================
+             MARKETPLACE LAYOUT
+        ====================================================== -->
+
+        <div class="marketplace-layout">
+
+
+            <!-- =================================================
+                 SIDEBAR FILTRES
+            ================================================== -->
+
+            <aside
+                class="filters-sidebar"
+                id="filtersSidebar"
+            >
+
+                <div class="filters-header">
+
+                    <h2 class="filters-title">
+
+                        <span class="filters-title-icon">
+                            ⚙️
+                        </span>
+
+                        Filtres
+
+                    </h2>
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="reset-filters"
+                    >
+                        Réinitialiser
                     </a>
 
                 </div>
 
-            </div>
 
-            {% empty %}
-            <p>Aucun produit disponible</p>
-            {% endfor %}
+                <form
+                    method="get"
+                    action="{% url 'home' %}"
+                    class="filter-body"
+                >
+
+                    <!-- ===============================
+                         RECHERCHE
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label
+                            class="filter-label"
+                            for="filter-search"
+                        >
+                            Recherche
+                        </label>
+
+                        <input
+                            id="filter-search"
+                            type="text"
+                            name="q"
+                            value="{{ search_query|default:'' }}"
+                            class="filter-input"
+                            placeholder="Nom du produit..."
+                        >
+
+                    </div>
+
+
+                    <!-- ===============================
+                         CATEGORIE
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label class="filter-label">
+                            Catégorie
+                        </label>
+
+                        <div class="category-list">
+
+                            <a
+                                href="{% url 'home' %}"
+                                class="category-option {% if not selected_category %}active{% endif %}"
+                            >
+
+                                <span class="category-icon">
+                                    🌿
+                                </span>
+
+                                <span>
+                                    Toutes les catégories
+                                </span>
+
+                            </a>
+
+
+                            {% for value, label in categories %}
+
+                                <a
+                                    href="?category={{ value }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                                    class="category-option {% if selected_category == value %}active{% endif %}"
+                                >
+
+                                    <span class="category-icon">
+
+                                        {% if value == "legume" %}
+                                            🥬
+                                        {% elif value == "fruit" %}
+                                            🍊
+                                        {% elif value == "cereale" %}
+                                            🌾
+                                        {% elif value == "forestiers" %}
+                                            🌳
+                                        {% else %}
+                                            🌱
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span>
+                                        {{ label }}
+                                    </span>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ===============================
+                         PRIX
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label class="filter-label">
+                            Prix
+                        </label>
+
+                        <div class="price-grid">
+
+                            <input
+                                type="number"
+                                name="min_price"
+                                value="{{ min_price|default:'' }}"
+                                class="filter-input price-input"
+                                placeholder="Min"
+                                min="0"
+                                step="1"
+                            >
+
+                            <input
+                                type="number"
+                                name="max_price"
+                                value="{{ max_price|default:'' }}"
+                                class="filter-input price-input"
+                                placeholder="Max"
+                                min="0"
+                                step="1"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ===============================
+                         UNITE
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label
+                            class="filter-label"
+                            for="filter-unit"
+                        >
+                            Unité de vente
+                        </label>
+
+                        <select
+                            id="filter-unit"
+                            name="unit"
+                            class="filter-select"
+                        >
+
+                            <option value="">
+                                Toutes les unités
+                            </option>
+
+                            <option
+                                value="kg"
+                                {% if selected_unit == "kg" %}selected{% endif %}
+                            >
+                                ⚖️ Kilogramme
+                            </option>
+
+                            <option
+                                value="sac"
+                                {% if selected_unit == "sac" %}selected{% endif %}
+                            >
+                                👜 Sac
+                            </option>
+
+                            <option
+                                value="piece"
+                                {% if selected_unit == "piece" %}selected{% endif %}
+                            >
+                                📦 Pièce
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ===============================
+                         PROVENANCE
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label
+                            class="filter-label"
+                            for="filter-origin"
+                        >
+                            Provenance
+                        </label>
+
+                        <input
+                            id="filter-origin"
+                            type="text"
+                            name="origin"
+                            value="{{ selected_origin|default:'' }}"
+                            class="filter-input"
+                            placeholder="Ex : Niamey, Maradi..."
+                        >
+
+                    </div>
+
+
+                    <!-- ===============================
+                         DISPONIBILITE
+                    ================================ -->
+
+                    <div class="filter-group">
+
+                        <label class="filter-label">
+                            Disponibilité
+                        </label>
+
+                        <label class="checkbox-option">
+
+                            <input
+                                type="checkbox"
+                                name="available"
+                                value="1"
+                                {% if availability == "1" %}checked{% endif %}
+                            >
+
+                            <span>
+                                Produits disponibles uniquement
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- ===============================
+                         BOUTON
+                    ================================ -->
+
+                    <button
+                        type="submit"
+                        class="apply-filters"
+                    >
+                        ✓ Appliquer les filtres
+                    </button>
+
+                </form>
+
+            </aside>
+
+
+            <!-- =================================================
+                 PRODUCTS AREA
+            ================================================== -->
+
+            <main class="products-area">
+
+
+                <!-- ===============================
+                     TOPBAR
+                ================================ -->
+
+                <div class="products-topbar">
+
+                    <div>
+
+                        <h2 class="products-heading">
+                            Produits agricoles
+                        </h2>
+
+                        <div class="products-count">
+
+                            <strong>
+                                {{ products|length }}
+                            </strong>
+
+                            produit(s)
+
+                            {% if selected_category %}
+                                dans cette catégorie
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     QUICK CATEGORIES
+                ================================================== -->
+
+                <div class="quick-categories">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="quick-category {% if not selected_category %}active{% endif %}"
+                    >
+                        🌿 Tous
+                    </a>
+
+
+                    {% for value, label in categories %}
+
+                        <a
+                            href="?category={{ value }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                            class="quick-category {% if selected_category == value %}active{% endif %}"
+                        >
+
+                            {% if value == "legume" %}
+                                🥬
+                            {% elif value == "fruit" %}
+                                🍊
+                            {% elif value == "cereale" %}
+                                🌾
+                            {% elif value == "forestiers" %}
+                                🌳
+                            {% else %}
+                                🌱
+                            {% endif %}
+
+                            {{ label }}
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- =================================================
+                     CAROUSEL CONTROLS
+                ================================================== -->
+
+                <div class="carousel-controls">
+
+                    <button
+                        type="button"
+                        class="carousel-btn"
+                        id="prevBtn"
+                        aria-label="Produits précédents"
+                    >
+                        ←
+                    </button>
+
+                    <button
+                        type="button"
+                        class="carousel-btn"
+                        id="nextBtn"
+                        aria-label="Produits suivants"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     PRODUCTS CAROUSEL
+                ================================================== -->
+
+                <div class="carousel-wrapper">
+
+                    <div
+                        class="products-carousel"
+                        id="productsCarousel"
+                    >
+
+                        {% for product in products %}
+
+                            <article class="product-card">
+
+
+                                <!-- IMAGE -->
+
+                                <div class="product-image">
+
+                                    <div class="product-badge">
+                                        🌱 Produit agricole
+                                    </div>
+
+
+                                    {% if product.stock > 0 and product.available %}
+
+                                        <div class="stock-badge stock-ok">
+                                            ✓ Disponible
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="stock-badge stock-empty">
+                                            Rupture
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    {% if product.image %}
+
+                                        <img
+                                            src="{{ product.image.url }}"
+                                            alt="{{ product.name }}"
+                                            loading="lazy"
+                                        >
+
+                                    {% else %}
+
+                                        <div class="product-placeholder">
+                                            🌾
+                                        </div>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- INFORMATIONS -->
+
+                                <div class="product-info">
+
+                                    {% if product.get_category_display %}
+
+                                        <div class="product-category">
+                                            {{ product.get_category_display }}
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <div class="product-name">
+                                        {{ product.name }}
+                                    </div>
+
+
+                                    {% if product.origin %}
+
+                                        <div class="product-origin">
+                                            📍 {{ product.origin }}
+                                        </div>
+
+                                    {% endif %}
+
+
+                                    <div class="product-price">
+
+                                        {{ product.price|floatformat:0 }}
+                                        FCFA
+
+                                        <span class="product-unit">
+                                            / {{ product.get_unit_display|default:product.unit }}
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- ACTIONS -->
+
+                                    <div class="product-actions">
+
+                                        <a
+                                            href="{% url 'product_detail' product.slug %}"
+                                            class="btn-detail"
+                                            title="Voir le produit"
+                                        >
+                                            👁
+                                        </a>
+
+
+                                        {% if product.stock > 0 and product.available %}
+
+                                            <a
+                                                href="/cart/add/{{ product.id }}/"
+                                                class="btn-add"
+                                            >
+                                                🛒 Ajouter au panier
+                                            </a>
+
+                                        {% else %}
+
+                                            <div class="btn-disabled">
+                                                Indisponible
+                                            </div>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+
+                        {% empty %}
+
+
+                            <!-- EMPTY -->
+
+                            <div class="empty-products">
+
+                                <div class="empty-products-icon">
+                                    🌾
+                                </div>
+
+                                <strong>
+                                    Aucun produit trouvé
+                                </strong>
+
+                                <span>
+                                    Aucun produit ne correspond aux critères
+                                    sélectionnés. Essayez de modifier ou
+                                    réinitialiser vos filtres.
+                                </span>
+
+                                <br>
+
+                                <a
+                                    href="{% url 'home' %}"
+                                    class="reset-filters"
+                                >
+                                    Réinitialiser les filtres
+                                </a>
+
+                            </div>
+
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </main>
 
         </div>
+
     </div>
 
 </div>
 
-<!-- ===== AUTOPLAY JS ===== -->
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    const container = document.getElementById("carousel");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+    /* =====================================================
+       CAROUSEL
+    ====================================================== */
 
-    if (!container) return;
+    const carousel =
+        document.getElementById("productsCarousel");
 
-    let step = 300;
-    let isPaused = false;
+    const prevBtn =
+        document.getElementById("prevBtn");
 
-    // AUTOPLAY
-    let interval = setInterval(() => {
-        if (isPaused) return;
+    const nextBtn =
+        document.getElementById("nextBtn");
 
-        if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-            container.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-            container.scrollBy({ left: step, behavior: "smooth" });
+
+    if (carousel) {
+
+        function getStep() {
+
+            const card =
+                carousel.querySelector(".product-card");
+
+            if (!card) {
+                return 300;
+            }
+
+            const styles =
+                window.getComputedStyle(carousel);
+
+            const gap =
+                parseInt(
+                    styles.columnGap ||
+                    styles.gap ||
+                    16
+                );
+
+            return card.offsetWidth + gap;
         }
-    }, 2500);
 
-    // PAUSE AU HOVER
-    container.addEventListener("mouseenter", () => isPaused = true);
-    container.addEventListener("mouseleave", () => isPaused = false);
 
-    // BOUTONS
-    nextBtn.addEventListener("click", () => {
-        container.scrollBy({ left: step, behavior: "smooth" });
-    });
+        if (nextBtn) {
 
-    prevBtn.addEventListener("click", () => {
-        container.scrollBy({ left: -step, behavior: "smooth" });
-    });
+            nextBtn.addEventListener(
+                "click",
+                function () {
+
+                    carousel.scrollBy({
+                        left: getStep(),
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+        }
+
+
+        if (prevBtn) {
+
+            prevBtn.addEventListener(
+                "click",
+                function () {
+
+                    carousel.scrollBy({
+                        left: -getStep(),
+                        behavior: "smooth"
+                    });
+
+                }
+            );
+
+        }
+
+
+        /* AUTOPLAY */
+
+        let paused = false;
+
+
+        carousel.addEventListener(
+            "mouseenter",
+            function () {
+                paused = true;
+            }
+        );
+
+
+        carousel.addEventListener(
+            "mouseleave",
+            function () {
+                paused = false;
+            }
+        );
+
+
+        carousel.addEventListener(
+            "touchstart",
+            function () {
+                paused = true;
+            },
+            { passive: true }
+        );
+
+
+        carousel.addEventListener(
+            "touchend",
+            function () {
+
+                setTimeout(
+                    function () {
+                        paused = false;
+                    },
+                    2500
+                );
+
+            },
+            { passive: true }
+        );
+
+
+        setInterval(
+            function () {
+
+                if (paused) {
+                    return;
+                }
+
+                const maxScroll =
+                    carousel.scrollWidth -
+                    carousel.clientWidth;
+
+
+                if (maxScroll <= 0) {
+                    return;
+                }
+
+
+                if (
+                    carousel.scrollLeft >=
+                    maxScroll - 10
+                ) {
+
+                    carousel.scrollTo({
+                        left: 0,
+                        behavior: "smooth"
+                    });
+
+                } else {
+
+                    carousel.scrollBy({
+                        left: getStep(),
+                        behavior: "smooth"
+                    });
+
+                }
+
+            },
+            4000
+        );
+
+
+        document.addEventListener(
+            "visibilitychange",
+            function () {
+
+                paused =
+                    document.hidden;
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       MOBILE FILTERS
+    ====================================================== */
+
+    const openFilters =
+        document.getElementById("openFilters");
+
+    const filtersSidebar =
+        document.getElementById("filtersSidebar");
+
+    const filterOverlay =
+        document.getElementById("filterOverlay");
+
+
+    function openMobileFilters() {
+
+        if (!filtersSidebar) {
+            return;
+        }
+
+        filtersSidebar.classList.add(
+            "mobile-open"
+        );
+
+        if (filterOverlay) {
+
+            filterOverlay.classList.add(
+                "active"
+            );
+
+        }
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+
+
+    function closeMobileFilters() {
+
+        if (!filtersSidebar) {
+            return;
+        }
+
+        filtersSidebar.classList.remove(
+            "mobile-open"
+        );
+
+        if (filterOverlay) {
+
+            filterOverlay.classList.remove(
+                "active"
+            );
+
+        }
+
+        document.body.style.overflow =
+            "";
+
+    }
+
+
+    if (openFilters) {
+
+        openFilters.addEventListener(
+            "click",
+            openMobileFilters
+        );
+
+    }
+
+
+    if (filterOverlay) {
+
+        filterOverlay.addEventListener(
+            "click",
+            closeMobileFilters
+        );
+
+    }
+
+
+    /* =====================================================
+       ESC POUR FERMER LES FILTRES
+    ====================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (event.key === "Escape") {
+                closeMobileFilters();
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       SI ON REPASSE SUR DESKTOP
+    ====================================================== */
+
+    window.addEventListener(
+        "resize",
+        function () {
+
+            if (window.innerWidth > 950) {
+
+                closeMobileFilters();
+
+            }
+
+        }
+    );
 
 });
+
 </script>
 
 {% endblock %}
