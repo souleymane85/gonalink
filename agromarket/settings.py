@@ -29,10 +29,14 @@ SECRET_KEY = 'django-insecure-te137(fuzd^c)ufwrx-6^9sjo80+&z6o84)p2d57rpzfe=c!t%
 DEBUG = True
 
 ALLOWED_HOSTS = ["gonalink.com",
+    "www.gonalink.com",
     "localhost",
     "127.0.0.1"]
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://gonalink.com",
+    "https://www.gonalink.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
