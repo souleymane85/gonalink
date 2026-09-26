@@ -144,6 +144,11 @@ CLOUDINARY_STORAGE = {
     "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
     "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
 }
+print("========== CLOUDINARY TEST ==========")
+print("CLOUD_NAME présent :", bool(os.environ.get("CLOUDINARY_CLOUD_NAME")))
+print("API_KEY présente :", bool(os.environ.get("CLOUDINARY_API_KEY")))
+print("API_SECRET présent :", bool(os.environ.get("CLOUDINARY_API_SECRET")))
+print("====================================")
 
 
 # =========================================================
