@@ -277,7 +277,7 @@ def product_detail(request, slug):
 # LISTE DES PRODUITS
 # ============================================================
 
-@login_required
+#@login_required
 def product_list(request):
 
     # --------------------------------------------------------
