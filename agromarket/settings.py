@@ -1,13 +1,6 @@
-
 from pathlib import Path
 import os
-
 import dj_database_url
-
-
-# =========================================================
-# BASE DIR
-# =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,13 +16,11 @@ SECRET_KEY = os.environ.get(
 
 DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-
 ALLOWED_HOSTS = [
     "gonalink.onrender.com",
     "localhost",
     "127.0.0.1",
 ]
-
 
 CSRF_TRUSTED_ORIGINS = [
     "https://gonalink.onrender.com",
@@ -48,13 +39,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    "cloudinary",
+    "cloudinary_storage",
+
     "products",
     "cart",
     "orders",
     "core",
     "accounts",
-    "cloudinary",
-    "cloudinary_storage",
 ]
 
 
@@ -85,20 +77,13 @@ WSGI_APPLICATION = "agromarket.wsgi.application"
 
 # =========================================================
 # DATABASE
-# =========================================================
-#
-# LOCAL :
-# Si DATABASE_URL n'existe pas, SQLite est utilisé.
-#
-# RENDER :
-# DATABASE_URL sera fournie par PostgreSQL Render.
-# Les données seront alors persistantes.
+# SQLite EN LOCAL
+# PostgreSQL SUR RENDER
 # =========================================================
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
-
     DATABASES = {
         "default": dj_database_url.parse(
             DATABASE_URL,
@@ -106,9 +91,7 @@ if DATABASE_URL:
             ssl_require=True,
         )
     }
-
 else:
-
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -146,21 +129,25 @@ LANGUAGE_CODE = "fr-fr"
 TIME_ZONE = "Africa/Niamey"
 
 USE_I18N = True
-
 USE_TZ = True
 
 
 # =========================================================
-# MEDIA
+# CLOUDINARY / MEDIA
 # =========================================================
 
 MEDIA_URL = "/media/"
-
 MEDIA_ROOT = BASE_DIR / "media"
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+}
 
 
 # =========================================================
-# STATIC FILES
+# STATIC
 # =========================================================
 
 STATIC_URL = "/static/"
@@ -173,19 +160,30 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # =========================================================
+# STORAGE
+# =========================================================
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
+
+# =========================================================
 # TEMPLATES
 # =========================================================
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-
         "DIRS": [
             BASE_DIR / "templates",
         ],
-
         "APP_DIRS": True,
-
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -203,7 +201,6 @@ TEMPLATES = [
 # =========================================================
 
 LOGIN_URL = "/accounts/login/"
-
 LOGIN_REDIRECT_URL = "/dashboard/"
 
 AUTH_USER_MODEL = "accounts.User"
@@ -214,33 +211,3 @@ AUTH_USER_MODEL = "accounts.User"
 # =========================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# =========================================================
-# WHITENOISE
-# =========================================================
-
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
-
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
-}
-
-STORAGES = {
-    "default": {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
