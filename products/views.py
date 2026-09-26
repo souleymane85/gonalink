@@ -322,32 +322,61 @@ def product_list(request):
 
 
 # ============================================================
-# AJOUTER UN PRODUIT
-# ============================================================
-
 @user_passes_test(is_admin)
 def product_create(request):
 
     if request.method == "POST":
 
-        form = ProductForm(
-            request.POST,
-            request.FILES
-        )
+        print("========== CREATE PRODUCT ==========")
+        print("FILES :", request.FILES)
+        print("POST :", request.POST)
 
-        if form.is_valid():
+        try:
 
-            product = form.save(
-                commit=False
+            form = ProductForm(
+                request.POST,
+                request.FILES
             )
 
-            product.seller = request.user
+            print("FORM CREATED")
+            print("FORM VALID :", form.is_valid())
+            print("FORM ERRORS :", form.errors)
 
-            product.save()
+            if form.is_valid():
 
-            return redirect(
-                "product_list"
-            )
+                print("FORM IS VALID")
+
+                product = form.save(
+                    commit=False
+                )
+
+                print("PRODUCT CREATED :", product)
+                print("IMAGE :", product.image)
+
+                product.seller = request.user
+
+                print("SELLER :", product.seller)
+
+                product.save()
+
+                print("PRODUCT SAVED")
+                print("IMAGE URL :", product.image.url)
+
+                return redirect(
+                    "product_list"
+                )
+
+        except Exception as e:
+
+            import traceback
+
+            print("========== ERREUR CREATE PRODUCT ==========")
+            print("TYPE :", type(e).__name__)
+            print("ERROR :", str(e))
+            traceback.print_exc()
+            print("===========================================")
+
+            raise
 
     else:
 
@@ -360,7 +389,6 @@ def product_create(request):
             "form": form
         }
     )
-
 
 # ============================================================
 # MODIFIER UN PRODUIT
