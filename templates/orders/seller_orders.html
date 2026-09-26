@@ -1,34 +1,124 @@
-<h1>
-Commandes clients
-</h1>
-{% for order in orders %}
 
-<div>
-<h3>
-Commande #{{order.id}}
-</h3>
-Client :
-{{order.name}}
-<br>
-Téléphone :
-{{order.phone}}
-<br>
-Adresse :
-{{order.address}}
-<br>
-Montant :
-{{order.total}} FCFA
-<br>
-Statut :
-{{order.status}}
-<br>
-<a href="{% url 'confirm_order' order.id %}">
-<button>
-CONFIRMER
-</button>
-</a>
-<hr>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h1 class="mb-4">
+        Commandes clients
+    </h1>
+
+
+    {% for order in orders %}
+
+    <div class="card mb-4 shadow-sm">
+
+        <div class="card-header">
+
+            <h4 class="mb-1">
+                Commande #{{ order.id }}
+            </h4>
+
+            <small class="text-muted">
+                {{ order.created_at|date:"d/m/Y à H:i" }}
+            </small>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <p>
+                <strong>Client :</strong>
+                {{ order.name }}
+            </p>
+
+
+            <p>
+                <strong>Téléphone :</strong>
+                {{ order.phone }}
+            </p>
+
+
+            <p>
+                <strong>Adresse :</strong>
+                {{ order.address }}
+            </p>
+
+
+            <p>
+                <strong>Produit(s) :</strong>
+            </p>
+
+            <ul>
+
+                {% for item in order.items.all %}
+
+                    {% if item.seller_id == request.user.id %}
+
+                    <li>
+
+                        <strong>
+                            {{ item.product.name }}
+                        </strong>
+
+                        × {{ item.quantity }}
+
+                        — {{ item.price }} FCFA
+
+                    </li>
+
+                    {% endif %}
+
+                {% empty %}
+
+                    <li class="text-muted">
+                        Aucun produit
+                    </li>
+
+                {% endfor %}
+
+            </ul>
+
+
+            <p>
+                <strong>Montant :</strong>
+                {{ order.total }} FCFA
+            </p>
+
+
+            <p>
+                <strong>Statut :</strong>
+                {{ order.get_status_display }}
+            </p>
+
+
+            {% if order.status == "pending" %}
+
+            <a
+                href="{% url 'confirm_order' order.id %}"
+                class="btn btn-success"
+            >
+                CONFIRMER
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    {% empty %}
+
+        <div class="alert alert-info">
+            Aucune commande
+        </div>
+
+    {% endfor %}
+
 </div>
-{% empty %}
-Aucune commande
-{% endfor %}
+
+{% endblock %}
+

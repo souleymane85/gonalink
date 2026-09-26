@@ -32,32 +32,55 @@ def is_admin(user):
 # ============================================================
 # TABLEAU DE BORD
 # ============================================================
+
 @login_required
 def dashboard(request):
+
     if not (
         request.user.is_superuser
         or request.user.role in ["ADMIN", "VENDEUR"]
     ):
         return redirect("home")
 
-    is_admin = request.user.is_superuser or request.user.role == "ADMIN"
+    # ADMIN / SUPERUSER
+    is_admin = (
+        request.user.is_superuser
+        or request.user.role == "ADMIN"
+    )
 
     # ==========================================================
     # PRODUITS ET COMMANDES
     # ==========================================================
-    if is_admin:
-        products = Product.objects.all()
-        orders = Order.objects.all()
-    else:
-        products = Product.objects.filter(seller=request.user)
 
-        orders = Order.objects.filter(
-            items__seller=request.user
-        ).distinct()
+    if is_admin:
+
+        products = Product.objects.all()
+
+        orders = (
+            Order.objects
+            .all()
+            .prefetch_related("items__product")
+        )
+
+    else:
+
+        products = Product.objects.filter(
+            seller=request.user
+        )
+
+        orders = (
+            Order.objects
+            .filter(
+                items__seller=request.user
+            )
+            .distinct()
+            .prefetch_related("items__product")
+        )
 
     # ==========================================================
     # STATISTIQUES
     # ==========================================================
+
     total_products = products.count()
 
     low_stock = products.filter(
@@ -74,7 +97,9 @@ def dashboard(request):
     revenue = (
         orders
         .filter(status="delivered")
-        .aggregate(total=Sum("total"))["total"]
+        .aggregate(
+            total=Sum("total")
+        )["total"]
         or 0
     )
 
@@ -89,38 +114,55 @@ def dashboard(request):
     # ==========================================================
     # PRODUITS RÉCENTS
     # ==========================================================
-    recent_products = products.order_by(
-        "-created_at"
-    )[:5]
+
+    recent_products = (
+        products
+        .select_related("seller")
+        .order_by("-created_at")[:5]
+    )
 
     # ==========================================================
     # COMMANDES RÉCENTES
+    #
+    # items__product permet au template d'afficher :
+    # {{ item.product.name }}
     # ==========================================================
-    recent_orders = orders.order_by(
-        "-created_at"
-    )[:5]
+
+    recent_orders = (
+        orders
+        .prefetch_related("items__product")
+        .order_by("-created_at")[:5]
+    )
 
     # ==========================================================
     # CONTEXTE
     # ==========================================================
+
     context = {
         "products": products,
+
         "total_products": total_products,
         "low_stock": low_stock,
         "out_of_stock": out_of_stock,
+
         "total_orders": total_orders,
         "revenue": revenue,
+
         "pending_orders": pending_orders,
         "delivered_orders": delivered_orders,
+
         "recent_products": recent_products,
         "recent_orders": recent_orders,
+
         "is_admin": is_admin,
     }
 
     # ==========================================================
     # STATISTIQUES VENDEURS POUR ADMIN
     # ==========================================================
+
     if is_admin:
+
         vendors = (
             User.objects
             .filter(role="VENDEUR")
@@ -129,6 +171,7 @@ def dashboard(request):
                     "products",
                     distinct=True
                 ),
+
                 nb_orders=Count(
                     "sales",
                     distinct=True
@@ -137,6 +180,10 @@ def dashboard(request):
         )
 
         context["vendors"] = vendors
+
+    # ==========================================================
+    # AFFICHAGE
+    # ==========================================================
 
     return render(
         request,
@@ -153,7 +200,10 @@ def home(request):
 
     category = request.GET.get("category")
 
-    search = request.GET.get("q", "").strip()
+    search = request.GET.get(
+        "q",
+        ""
+    ).strip()
 
     # --------------------------------------------------------
     # PRODUITS DISPONIBLES
@@ -196,11 +246,8 @@ def home(request):
         "home.html",
         {
             "products": products,
-
             "categories": Product.CATEGORY,
-
             "selected_category": category,
-
             "search_query": search,
         }
     )
@@ -238,7 +285,10 @@ def product_list(request):
     # VENDEUR : uniquement ses produits
     # --------------------------------------------------------
 
-    if request.user.is_superuser or request.user.role == "ADMIN":
+    if (
+        request.user.is_superuser
+        or request.user.role == "ADMIN"
+    ):
 
         products = (
             Product.objects
@@ -251,7 +301,9 @@ def product_list(request):
 
         products = (
             Product.objects
-            .filter(seller=request.user)
+            .filter(
+                seller=request.user
+            )
             .select_related("seller")
             .order_by("-created_at")
         )

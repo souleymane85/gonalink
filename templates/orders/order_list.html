@@ -1,100 +1,202 @@
-{% extends 'base.html' %}
 
+{% extends 'base.html' %}
 
 {% block content %}
 
-
 <h2>
-Liste des commandes
+    Liste des commandes
 </h2>
-
-
 
 <table class="table table-striped">
 
-
 <thead>
 
-<tr>
+    <tr>
 
-<th>ID</th>
+        <th>ID</th>
 
-<th>Client</th>
+        
 
-<th>Téléphone</th>
+        {% if request.user.is_superuser or request.user.is_staff %}
+            <th>Vendeur</th>
+        {% endif %}
 
-<th>Total</th>
+        <th>Client</th>
 
-<th>Statut</th>
+        <th>Produit</th>
 
-<th>Action</th>
+        <th>Téléphone</th>
 
-</tr>
+        <th>Total</th>
+
+        <th>Statut</th>
+        <th>Date / Heure</th>
+
+        <th>Action</th>
+
+    </tr>
 
 </thead>
 
 
-
 <tbody>
 
+    {% for order in orders %}
+
+    <tr>
+
+        <!-- ID -->
+
+        <td>
+            #{{ order.id }}
+        </td>
 
 
-{% for order in orders %}
+        
 
 
-<tr>
+        <!-- VENDEUR : ADMIN / SUPERUSER UNIQUEMENT -->
+
+        {% if request.user.is_superuser or request.user.is_staff %}
+
+        <td>
+
+            {% for item in order.items.all %}
+
+                {% if item.seller %}
+
+                    <div>
+                        <strong>
+                            {{ item.seller.get_full_name|default:item.seller.username }}
+                        </strong>
+                    </div>
+
+                {% else %}
+
+                    <div class="text-muted">
+                        Vendeur non renseigné
+                    </div>
+
+                {% endif %}
+
+                {% if not forloop.last %}
+                    <hr class="my-1">
+                {% endif %}
+
+            {% empty %}
+
+                <span class="text-muted">
+                    Aucun vendeur
+                </span>
+
+            {% endfor %}
+
+        </td>
+
+        {% endif %}
 
 
-<td>
-#{{ order.id }}
-</td>
+        <!-- CLIENT -->
+
+        <td>
+            {{ order.name }}
+        </td>
 
 
-<td>
-{{ order.name }}
-</td>
+        <!-- PRODUITS -->
+
+        <td>
+
+            {% for item in order.items.all %}
+
+                <div>
+
+                    <strong>
+                        {{ item.product.name }}
+                    </strong>
+
+                    <small class="text-muted">
+                        × {{ item.quantity }}
+                    </small>
+
+                </div>
+
+                {% if not forloop.last %}
+                    <hr class="my-1">
+                {% endif %}
+
+            {% empty %}
+
+                <span class="text-muted">
+                    Aucun produit
+                </span>
+
+            {% endfor %}
+
+        </td>
 
 
-<td>
-{{ order.phone }}
-</td>
+        <!-- TELEPHONE -->
+
+        <td>
+            {{ order.phone }}
+        </td>
 
 
-<td>
-{{ order.total }} FCFA
-</td>
+        <!-- TOTAL -->
+
+        <td>
+            {{ order.total }} FCFA
+        </td>
 
 
-<td>
-{{ order.get_status_display }}
-</td>
+        <!-- STATUT -->
+
+        <td>
+            {{ order.get_status_display }}
+        </td>
+
+<!-- DATE ET HEURE -->
+
+        <td>
+            {{ order.created_at|date:"d/m/Y H:i" }}
+        </td>
+        <!-- ACTION -->
+
+        <td>
+
+            <a
+                href="{% url 'order_detail' order.id %}"
+                class="btn btn-primary btn-sm"
+            >
+                Voir
+            </a>
+
+        </td>
+
+    </tr>
 
 
-<td>
+    {% empty %}
 
-<a href="{% url 'order_detail' order.id %}"
-class="btn btn-primary btn-sm">
+    <tr>
 
-Voir
+        <td
+            colspan="{% if request.user.is_superuser or request.user.is_staff %}9{% else %}8{% endif %}"
+            class="text-center"
+        >
 
-</a>
+            Aucune commande trouvée.
 
-</td>
+        </td>
 
+    </tr>
 
-</tr>
-
-
-
-{% endfor %}
-
-
+    {% endfor %}
 
 </tbody>
 
-
 </table>
 
-
-
 {% endblock %}
+

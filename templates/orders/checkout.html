@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 
@@ -6,113 +7,200 @@ Finaliser commande
 {% endblock %}
 
 
-
 {% block content %}
-
-
 
 <div class="container py-5">
 
+    <div class="row justify-content-center">
 
-<div class="row justify-content-center">
+        <div class="col-md-8">
 
+            <div class="card shadow p-4">
 
-<div class="col-md-6">
-
-
-<div class="card shadow p-4">
-
-
-<h2 class="text-center mb-4">
-
-🛒 Finaliser votre commande
-
-</h2>
+                <h2 class="text-center mb-4">
+                    🛒 Finaliser votre commande
+                </h2>
 
 
+                <!-- ========================== -->
+                <!-- RÉCAPITULATIF COMMANDE -->
+                <!-- ========================== -->
 
-<form method="POST">
-
-
-{% csrf_token %}
-
-
-
-
-<div class="mb-3">
-
-<label>
-
-Nom complet
-
-</label>
+                <h5 class="mb-3">
+                    Récapitulatif de votre commande
+                </h5>
 
 
-<input 
-type="text"
-name="name"
-class="form-control"
-required>
+                <div class="table-responsive">
 
-</div>
+                    <table class="table table-bordered">
 
-<div class="mb-3">
+                        <thead>
 
-<label>
+                            <tr>
 
-Téléphone WhatsApp
+                                <th>Produit</th>
 
-</label>
+                                <th>Quantité</th>
 
+                                <th>Prix</th>
 
-<input 
-type="text"
-name="phone"
-class="form-control"
-placeholder="227xxxxxxxx"
-required>
+                                <th>Sous-total</th>
 
-</div>
+                            </tr>
 
-<div class="mb-3">
+                        </thead>
 
 
-<label>
+                        <tbody>
 
-Adresse livraison
+                            {% for item in cart_items %}
 
-</label>
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ item.product.name }}
+                                    </strong>
+                                </td>
 
 
-<textarea
+                                <td>
+                                    {{ item.quantity }}
+                                </td>
 
-name="address"
 
-class="form-control"
+                                <td>
+                                    {{ item.price }} FCFA
+                                </td>
 
-rows="3"
 
-required>
+                                <td>
+                                    {{ item.subtotal }} FCFA
+                                </td>
 
-</textarea>
+                            </tr>
 
-</div>
 
-<button
+                            {% empty %}
 
-class="btn btn-success w-100">
+                            <tr>
 
-Confirmer la commande
+                                <td
+                                    colspan="4"
+                                    class="text-center text-muted"
+                                >
+                                    Aucun produit
+                                </td>
 
-</button>
+                            </tr>
 
-</form>
+                            {% endfor %}
 
-</div>
+                        </tbody>
 
-</div>
 
-</div>
+                        <tfoot>
+
+                            <tr>
+
+                                <th colspan="3" class="text-end">
+                                    Total
+                                </th>
+
+                                <th>
+                                    {{ total_panier }} FCFA
+                                </th>
+
+                            </tr>
+
+                        </tfoot>
+
+                    </table>
+
+                </div>
+
+
+                <hr>
+
+
+                <!-- ========================== -->
+                <!-- INFORMATIONS CLIENT -->
+                <!-- ========================== -->
+
+                <h5 class="mb-3">
+                    Informations de livraison
+                </h5>
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Nom complet
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            class="form-control"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Téléphone WhatsApp
+                        </label>
+
+                        <input
+                            type="text"
+                            name="phone"
+                            class="form-control"
+                            placeholder="227xxxxxxxx"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Adresse livraison
+                        </label>
+
+                        <textarea
+                            name="address"
+                            class="form-control"
+                            rows="3"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-success w-100"
+                    >
+                        Confirmer la commande
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
